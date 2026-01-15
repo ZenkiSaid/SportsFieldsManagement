@@ -5,7 +5,7 @@ class Database {
     private $conexion;
     private $servidor = "DESKTOP-GE79NBB";
     private $usuario = "sa";
-    private $password = "@Danny@110404";
+    private $password = "Erick_02";
     private $base_datos = "gestion_canchas";
 
     public function __construct() {
