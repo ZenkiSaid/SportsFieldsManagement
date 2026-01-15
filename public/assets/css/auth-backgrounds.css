@@ -1,0 +1,61 @@
+/* 
+    GUÍA PARA PERSONALIZAR BACKGROUNDS EN LOGIN/REGISTER
+    
+    Las secciones de login y register tienen soporte para backgrounds dinámicos.
+    Puedes editar la clase .auth-content para agregar un background-image.
+    
+    EJEMPLOS:
+    
+    1. Fondo sólido:
+    .auth-content {
+        background-color: #f0f0f0;
+    }
+    
+    2. Con imagen local:
+    .auth-content {
+        background-image: url('path/a/imagen.jpg');
+        background-size: cover;
+        background-position: center;
+    }
+    
+    3. Gradiente:
+    .auth-content {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    4. Imagen remota:
+    .auth-content {
+        background-image: url('https://ejemplo.com/cancha.jpg');
+        background-size: cover;
+    }
+    
+    NOTA IMPORTANTE:
+    - El overlay semi-transparente (.auth-content::before) asegura legibilidad del texto
+    - Está configurado en 0.95 opacidad para permitir ver el background de fondo
+    - Si deseas un fondo más visible, reduce la opacidad en el ::before
+    
+    UBICACIONES DE IMÁGENES:
+    - Imágenes locales: /public/assets/img/ (ej: /assets/img/cancha-login.jpg)
+    - Asegúrate de usar rutas relativas desde public/
+*/
+
+/* EJEMPLOS DE PERSONALIZACIÓN POR SECCIÓN */
+
+/* Para distintos backgrounds en Login vs Register, puedes hacer esto:
+   Edita app/views/auth/login.php y cambia el div de auth-content a:
+   
+   <div class="auth-content" id="auth-login-section">  // Para login
+   <div class="auth-content" id="auth-register-section">  // Para register
+   
+   Luego en el CSS:
+*/
+
+#auth-login-section {
+    /* Agregar background para login aquí */
+    background-image: none;
+}
+
+#auth-register-section {
+    /* Agregar background para register aquí */
+    background-image: none;
+}
