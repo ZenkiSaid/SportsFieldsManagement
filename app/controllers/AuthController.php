@@ -34,6 +34,7 @@ class AuthController extends Controller {
                 // Login exitoso - guardar sesión
                 $_SESSION['usuario_id'] = $resultado['usuario']['id_usu'];
                 $_SESSION['usuario_nombre'] = $resultado['usuario']['nombre_usu'];
+                $_SESSION['usuario_rol'] = $resultado['usuario']['id_rol'];
                 $_SESSION['autenticado'] = true;
 
                 // Redirigir al dashboard

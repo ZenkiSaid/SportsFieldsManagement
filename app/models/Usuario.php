@@ -97,7 +97,7 @@ class Usuario {
         }
 
         // Buscar por nombre de usuario O por correo
-        $query = "SELECT id_usu, nombre_usu, password_usu FROM usuario WHERE nombre_usu = ? OR correo_usu = ?";
+        $query = "SELECT id_usu, nombre_usu, password_usu, id_rol FROM usuario WHERE nombre_usu = ? OR correo_usu = ?";
         $result = $this->db->select($query, [$nombre_usu_o_correo, $nombre_usu_o_correo]);
 
         if (!$result || count($result) === 0) {
@@ -112,7 +112,8 @@ class Usuario {
                 'success' => true,
                 'usuario' => [
                     'id_usu' => $usuario['id_usu'],
-                    'nombre_usu' => $usuario['nombre_usu']
+                    'nombre_usu' => $usuario['nombre_usu'],
+                    'id_rol' => $usuario['id_rol']
                 ]
             ];
         }
