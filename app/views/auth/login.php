@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - Canchas Premium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/landinghome.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
     <style>
         body { 
             margin: 0;
@@ -19,29 +19,11 @@
             align-items: center; 
             justify-content: center; 
             padding: 2rem;
-            background: url('assets/img/background.webp') center/cover fixed;
+            background: url('assets/img/background1.webp') center/cover fixed;
             position: relative;
             overflow: hidden;
         }
 
-        /* Background animado opcional */
-        .auth-page::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(0, 100, 200, 0.05) 0%, transparent 50%);
-            top: -50%;
-            left: -50%;
-            animation: moveBackground 15s ease-in-out infinite;
-        }
-
-        @keyframes moveBackground {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(50px, 50px); }
-        }
-        
         .auth-container { 
             background: #fff; 
             border-radius: 20px; 
@@ -76,18 +58,6 @@
         .auth-content { 
             padding: 3rem 2.5rem;
             position: relative;
-        }
-
-        /* Overlay semitransparente para el background */
-        .auth-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.95);
-            z-index: -1;
         }
 
         .auth-title { 
@@ -153,10 +123,6 @@
             box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
         }
 
-        .btn-auth:active {
-            transform: translateY(0);
-        }
-
         .switch-link { 
             text-align: center; 
             margin-top: 1.5rem; 
@@ -176,23 +142,51 @@
         }
 
         .home-btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background: rgba(0, 255, 42, 0.7);
-            color: #fff;
-            padding: 0.7rem 1.2rem;
-            border-radius: 8px;
+            top: 1.5rem;
+            left: 1.5rem;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.9) 0%, rgba(0, 200, 100, 0.9) 100%);
+            color: #000;
+            padding: 0.9rem 1.8rem;
+            border-radius: 50px;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 700;
             z-index: 2;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .home-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
         }
 
         .home-btn:hover {
-            background: rgba(0, 0, 0, 0.9);
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
+            color: #000;
+        }
+
+        .home-btn:hover::before {
+            left: 100%;
+        }
+
+        .home-btn:active {
+            transform: translateY(-2px) scale(1.02);
         }
 
         .footer-box {
@@ -258,75 +252,43 @@
     </style>
 </head>
 <body>
-
     <div class="auth-page">
-        <a href="index.php?controller=Home&action=index" class="home-btn"><i class="fas fa-arrow-left"></i> Volver al Inicio</a>
+        <a href="index.php?controller=Home&action=index" class="home-btn"><i class="fas fa-arrow-left"></i> Volver</a>
+        
         <div class="auth-container">
             <div class="auth-header">
-                <h1>Iniciar Sesión</h1>
-                <p>Accede a tu cuenta de Canchas Premium</p>
+                <h1>Bienvenido</h1>
+                <p>Ingresa a tu cuenta para reservar</p>
             </div>
 
             <div class="auth-content">
-                    <?php if(isset($_GET['msg']) && $_GET['msg'] == 'registrosuccess'): ?>
-                        <div style="background: #d5f4e6; border-left: 4px solid var(--primary); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; color: #27ae60; text-align: center;">
-                            <i class="fas fa-check-circle"></i> <strong>Cuenta creada exitosamente.</strong><br>
-                            <span style="font-size: 0.9rem;">Ahora puedes iniciar sesión</span>
-                        </div>
+                <?php if(isset($_GET['msg'])): ?>
+                    <?php if($_GET['msg'] == 'registrosuccess'): ?>
+                        <div class="success-msg"><i class="fas fa-check"></i> Registro exitoso. Inicia sesión.</div>
+                    <?php elseif($_GET['msg'] == 'error'): ?>
+                        <div class="error-msg"><i class="fas fa-times"></i> Credenciales incorrectas.</div>
                     <?php endif; ?>
-                    <?php if(isset($_GET['msg']) && $_GET['msg'] == 'error'): ?>
-                        <div class="error-msg"><i class="fas fa-exclamation-circle"></i> Usuario o contraseña incorrectos</div>
-                    <?php endif; ?>
-                    <?php if(isset($_GET['msg']) && $_GET['msg'] == 'required'): ?>
-                        <div class="error-msg"><i class="fas fa-exclamation-circle"></i> Por favor completa todos los campos</div>
-                    <?php endif; ?>
-                    
-                    <form action="index.php?controller=Auth&action=login" method="POST">
-                        <div class="form-group">
-                            <label><i class="fas fa-user"></i> Usuario o Correo</label>
-                            <input class="form-control" type="text" name="nombre_usu" placeholder="Tu usuario o correo electrónico" required autocomplete="username">
-                        </div>
-                        <div class="form-group input-wrap">
-                            <label><i class="fas fa-lock"></i> Contraseña</label>
-                            <input id="login-password" class="form-control" type="password" name="password" placeholder="••••••••" required autocomplete="current-password">
-                            <button type="button" class="eye-btn" onclick="togglePassword('login-password')" title="Mostrar contraseña">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                        <button class="btn-auth" type="submit"><i class="fas fa-sign-in-alt"></i> Ingresar a mi Espacio</button>
-                    </form>
-                    <div class="switch-link">¿No tienes cuenta? <a href="index.php?controller=Auth&action=register">Regístrate aquí</a></div>
-                    <div class="footer-box">
-                        <i class="fas fa-shield-alt"></i> Tu información está segura y protegida
+                <?php endif; ?>
+
+                <form action="index.php?controller=Auth&action=login" method="POST">
+                    <div class="form-group">
+                        <label>Usuario o Correo</label>
+                        <input class="form-control" type="text" name="nombre_usu" placeholder="Tu usuario o correo electrónico" required autocomplete="username">
                     </div>
+                    <div class="form-group input-wrap">
+                        <label>Contraseña</label>
+                        <input id="login-password" class="form-control" type="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+                        <button type="button" class="eye-btn" onclick="togglePassword('login-pass')"><i class="fas fa-eye"></i></button>
+                    </div>
+                    <button class="btn-auth" type="submit">Entrar</button>
+                </form>
+
+                <div class="switch-link">
+                    ¿No tienes cuenta? <a href="index.php?controller=Auth&action=register">Regístrate</a>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        function togglePassword(id){
-            const el = document.getElementById(id);
-            if(!el) return;
-            el.type = el.type === 'password' ? 'text' : 'password';
-        }
-        
-        // Tab switching
-        document.getElementById('tab-login').addEventListener('click', function(){
-            document.getElementById('panel-login').style.display='block';
-            document.getElementById('panel-register').style.display='none';
-            this.classList.add('active');
-            document.getElementById('tab-register').classList.remove('active');
-            window.scrollTo(0, 0);
-        });
-        
-        document.getElementById('tab-register').addEventListener('click', function(){
-            document.getElementById('panel-login').style.display='none';
-            document.getElementById('panel-register').style.display='block';
-            this.classList.add('active');
-            document.getElementById('tab-login').classList.remove('active');
-            window.scrollTo(0, 0);
-        });
-    </script>
+    <script src="assets/js/auth.js"></script>
 </body>
 </html>

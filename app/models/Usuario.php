@@ -1,122 +1,107 @@
 <?php
+// app/models/Usuario.php
 
 class Usuario {
     private $db;
 
-    public function __construct($database) {
-        $this->db = $database;
-    }
+public function __construct($database) {
+    $this->db = $database;
+}
 
-    /**
-     * Registra un nuevo usuario con email
-     */
+
+    // --- CÓDIGO EXISTENTE (Registro y Login) ---
+
+    // Registrar usuario y asignarle rol Cliente
     public function registrar($nombre_usu, $email, $password) {
         if (empty($nombre_usu) || empty($email) || empty($password)) {
             return ['success' => false, 'message' => 'Campos requeridos'];
         }
 
-        if (strlen($nombre_usu) < 3) {
-            return ['success' => false, 'message' => 'El usuario debe tener al menos 3 caracteres'];
+        $sqlCheck = "SELECT COUNT(*) as total FROM usuario WHERE nombre_usu = ? OR correo_usu = ?";
+        $check = $this->db->select($sqlCheck, [$nombre_usu, $email]);
+
+        if ($check && $check[0]['total'] > 0) {
+            return ['success' => false, 'message' => 'El usuario o correo ya existe'];
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return ['success' => false, 'message' => 'Email inválido'];
+        $hash = password_hash($password, PASSWORD_BCRYPT);
+
+        $sqlUser = "INSERT INTO usuario (nombre_usu, correo_usu, password_usu) VALUES (?, ?, ?)";
+        if ($this->db->insert($sqlUser, [$nombre_usu, $email, $hash])) {
+            
+            $id_usuario = $this->db->lastInsertId();
+
+            // Rol Cliente (ID 3)
+            $sqlRol = "INSERT INTO usuario_rol (id_usu, id_rol) VALUES (?, 3)";
+            $this->db->insert($sqlRol, [$id_usuario]);
+
+            return ['success' => true, 'message' => 'Registro exitoso'];
         }
 
-        // Validar contraseña fuerte
-        $validacion = $this->validarContraseña($password);
-        if (!$validacion['fuerte']) {
-            return ['success' => false, 'message' => implode(', ', $validacion['recomendaciones'])];
-        }
-
-        // Verificar usuario único
-        $query = "SELECT COUNT(*) as count FROM usuario WHERE nombre_usu = ? OR correo_usu = ?";
-        $result = $this->db->select($query, [$nombre_usu, $email]);
-        
-        if ($result && $result[0]['count'] > 0) {
-            return ['success' => false, 'message' => 'Usuario o email ya existe'];
-        }
-
-        // Encriptar contraseña
-        $password_hash = password_hash($password, PASSWORD_BCRYPT);
-
-        // Insertar usuario
-        $query = "INSERT INTO usuario (nombre_usu, correo_usu, password_usu) VALUES (?, ?, ?)";
-        $result = $this->db->insert($query, [$nombre_usu, $email, $password_hash]);
-
-        if ($result) {
-            return ['success' => true, 'message' => 'Usuario registrado'];
-        }
-        
-        return ['success' => false, 'message' => 'Error al registrar'];
+        return ['success' => false, 'message' => 'Error al registrar usuario'];
     }
 
-    /**
-     * Valida contraseña fuerte
-     */
-    public function validarContraseña($password) {
-        $recomendaciones = [];
-        $fuerte = true;
-
-        if (strlen($password) < 8) {
-            $recomendaciones[] = 'Mínimo 8 caracteres';
-            $fuerte = false;
-        }
-
-        if (!preg_match('/[A-Z]/', $password)) {
-            $recomendaciones[] = 'Agregar mayúsculas';
-            $fuerte = false;
-        }
-
-        if (!preg_match('/[a-z]/', $password)) {
-            $recomendaciones[] = 'Agregar minúsculas';
-            $fuerte = false;
-        }
-
-        if (!preg_match('/[0-9]/', $password)) {
-            $recomendaciones[] = 'Agregar números';
-            $fuerte = false;
-        }
-
-        if (!preg_match('/[!@#$%^&*()_+\-=\[\]{};:\'",.<>?\/\\|`~]/', $password)) {
-            $recomendaciones[] = 'Agregar caracteres especiales';
-            $fuerte = false;
-        }
-
-        return ['fuerte' => $fuerte, 'recomendaciones' => $recomendaciones];
-    }
-
-
-
-    /**
-     * Autentica un usuario con usuario o correo
-     */
-    public function autenticar($nombre_usu_o_correo, $password) {
-        if (empty($nombre_usu_o_correo) || empty($password)) {
-            return ['success' => false, 'usuario' => null];
-        }
-
-        // Buscar por nombre de usuario O por correo
-        $query = "SELECT id_usu, nombre_usu, password_usu FROM usuario WHERE nombre_usu = ? OR correo_usu = ?";
-        $result = $this->db->select($query, [$nombre_usu_o_correo, $nombre_usu_o_correo]);
+    // Autenticar usuario
+    public function autenticar($usuario_o_correo, $password) {
+        $sql = "SELECT id_usu, nombre_usu, password_usu, correo_usu 
+                FROM usuario 
+                WHERE nombre_usu = ? OR correo_usu = ?";
+        
+        $result = $this->db->select($sql, [$usuario_o_correo, $usuario_o_correo]);
 
         if (!$result || count($result) === 0) {
-            return ['success' => false, 'usuario' => null];
+            return ['success' => false, 'message' => 'Usuario no encontrado'];
         }
 
-        $usuario = $result[0];
+        $user = $result[0];
 
-        // Verificar contraseña
-        if (password_verify($password, $usuario['password_usu'])) {
+        if (password_verify($password, $user['password_usu'])) {
+            
+            $sqlRol = "SELECT r.nombre_rol 
+                       FROM rol r 
+                       JOIN usuario_rol ur ON r.id_rol = ur.id_rol 
+                       WHERE ur.id_usu = ?";
+            $resRol = $this->db->select($sqlRol, [$user['id_usu']]);
+            $rol = $resRol ? $resRol[0]['nombre_rol'] : 'Cliente';
+
             return [
                 'success' => true,
                 'usuario' => [
-                    'id_usu' => $usuario['id_usu'],
-                    'nombre_usu' => $usuario['nombre_usu']
+                    'id_usu' => $user['id_usu'],
+                    'nombre_usu' => $user['nombre_usu'],
+                    'rol' => $rol
                 ]
             ];
         }
 
-        return ['success' => false, 'usuario' => null];
+        return ['success' => false, 'message' => 'Contraseña incorrecta'];
     }
+
+    // --- NUEVO CÓDIGO AGREGADO PARA EL ADMINISTRADOR ---
+
+    // 1. Obtener TODOS los usuarios (Para la tabla de Gestión Clientes)
+    public function obtenerTodos() {
+        $sql = "SELECT * FROM usuario";
+        // Retorna el array de usuarios directamente usando tu clase Database
+        return $this->db->select($sql);
+    }
+
+    // 2. Obtener UN usuario por ID (Para cuando quieras editar uno)
+    public function obtenerPorId($id) {
+        $sql = "SELECT * FROM usuario WHERE id_usu = ?";
+        $result = $this->db->select($sql, [$id]);
+        return $result ? $result[0] : null;
+    }
+
+    // 3. Eliminar usuario (Para el botón rojo de la tabla)
+    public function eliminar($id) {
+        $sql = "DELETE FROM usuario WHERE id_usu = ?";
+        // Usamos insert porque tu clase Database usa 'execute' dentro de insert, sirve para DELETE también
+        return $this->db->insert($sql, [$id]); 
+    }
+    //metodo actualizar 
+    public function actualizar($id, $nombre, $correo) {
+    $sql = "UPDATE usuario SET nombre_usu = ?, correo_usu = ? WHERE id_usu = ?";
+    return $this->db->insert($sql, [$nombre, $correo, $id]); // Tu DB usa insert para ejecutar
+}
 }
