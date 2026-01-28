@@ -50,7 +50,7 @@ body {
 }
 
 .auth-container {
-  background: #fff;
+  background: #b9ffc2;
   border-radius: 20px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   width: 100%;
@@ -80,7 +80,7 @@ body {
 .auth-content {
   padding: 3rem 2.5rem;
   position: relative;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(185, 255, 194, 0.95);
 }
 .form-group {
   margin-bottom: 1.2rem;
