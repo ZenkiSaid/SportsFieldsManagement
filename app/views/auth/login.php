@@ -279,13 +279,13 @@
                     <div class="form-group input-wrap">
                         <label>Contraseña</label>
                         <input id="login-password" class="form-control" type="password" name="password" placeholder="••••••••" required autocomplete="current-password">
-                        <button type="button" class="eye-btn" onclick="togglePassword('login-pass')"><i class="fas fa-eye"></i></button>
+                        <button type="button" class="eye-btn" onclick="togglePassword('login-password')"><i class="fas fa-eye"></i></button>
                     </div>
                     <button class="btn-auth" type="submit">Entrar</button>
                 </form>
 
-                <div class="switch-link">
-                    ¿No tienes cuenta? <a href="index.php?controller=Auth&action=register">Regístrate</a>
+                <div class="switch-link color">
+                    ¿No tienes cuenta? <a href="index.php?controller=Auth&action=register" style="color: #166534; font-weight: 700;">Regístrate</a>
                 </div>
             </div>
         </div>
