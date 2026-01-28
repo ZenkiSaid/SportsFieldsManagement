@@ -324,10 +324,10 @@
                     <div class="error-msg"><i class="fas fa-exclamation-circle"></i> Las contraseñas no coinciden</div>
                 <?php endif; ?>
                 <?php if(isset($_GET['msg']) && $_GET['msg'] == 'success'): ?>
-                    <div class="success-msg"><i class="fas fa-check-circle"></i> Cuenta creada exitosamente. <a href="index.php?url=Auth/login" style="color: #27ae60; font-weight: 600;">Inicia sesión aquí</a></div>
+                    <div class="success-msg"><i class="fas fa-check-circle"></i> Cuenta creada exitosamente. <a href="index.php?url=Auth/login" style="color: #166534; font-weight: 700;">Inicia sesión aquí</a></div>
                 <?php endif; ?>
                 
-                <form action="index.php?url=Auth/register" method="POST">
+                <form action="index.php?controller=Auth&action=register" method="POST">
                     <div class="form-group">
                         <label><i class="fas fa-user"></i> Nombre de usuario</label>
                         <input class="form-control" type="text" name="nombre_usu" placeholder="Tu nombre de usuario" required autocomplete="username">
@@ -382,7 +382,7 @@
                 </form>
 
                 <div class="back-link">
-                    <a href="index.php?controller=Auth&action=login"><i class="fas fa-arrow-left"></i> Iniciar Sesión</a>
+                    <a href="index.php?controller=Auth&action=login" style="color: #166534; font-weight: 700;"><i class="fas fa-arrow-left"></i> Iniciar Sesión</a>
                 </div>
             </div>
         </div>
