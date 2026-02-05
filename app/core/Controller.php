@@ -40,8 +40,8 @@ class Controller {
             $output = ob_get_clean();
 
             // Etiqueta del favicon (ruta relativa a public/ desde vistas)
-            $faviconTag = '<link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">\n'
-                        . '<link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">\n'
+            $faviconTag = '<link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">'
+                        . '<link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">'
                         . '<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">';
 
             // Si la vista contiene un </head>, insertamos el favicon justo antes
