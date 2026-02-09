@@ -21,7 +21,7 @@
             </div>
             
             <div class="card-body table-responsive p-0">
-                <table class="table table-hover align-middle text-nowrap mb-0">
+                <table class="table table-hover align-middle text-nowrap mb-0 table-mobile-responsive">
                     
                     <thead class="bg-info text-white text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">
                         <tr>
@@ -50,18 +50,18 @@
                         <?php if (!empty($usuarios)): ?>
                             <?php foreach ($usuarios as $user): ?>
                             <tr>
-                                <td class="pl-4 text-muted font-weight-bold">
+                                <td class="pl-4 text-muted font-weight-bold" data-label="ID">
                                     #<?= $user['id_usu'] ?>
                                 </td>
                                 
-                                <td class="text-center">
+                                <td class="text-center" data-label="Registro">
                                     <span class="badge badge-light border text-info px-3 py-2" style="font-weight: 600;">
                                         <?= date('d/m/Y', strtotime($user['created_at'] ?? 'now')) ?>
                                     </span>
                                 </td>
 
-                                <td>
-                                    <div class="d-flex align-items-center">
+                                <td data-label="Cliente">
+                                    <div class="d-flex align-items-center justify-content-end-mobile">
                                         <div class="rounded-circle d-flex justify-content-center align-items-center mr-3 text-white shadow-sm" 
                                              style="width: 40px; height: 40px; background-color: #17a2b8; font-size: 1.1em; border: 2px solid #fff; box-shadow: 0 0 0 1px #17a2b8;">
                                             <?= strtoupper(substr($user['nombre_usu'], 0, 1)) ?>
@@ -75,20 +75,20 @@
                                     </div>
                                 </td>
 
-                                <td>
+                                <td data-label="Correo">
                                     <div class="text-secondary font-weight-bold" style="font-size: 0.95rem;">
                                         <i class="far fa-envelope-open mr-2 text-muted"></i>
                                         <?= htmlspecialchars($user['email_usu'] ?? $user['correo_usu']) ?> 
                                         </div>
                                 </td>
 
-                                <td class="text-center">
+                                <td class="text-center" data-label="Acceso">
                                     <span class="badge badge-pill badge-light border text-muted px-3" data-toggle="tooltip" title="Contraseña Segura">
                                         <i class="fas fa-lock mr-1 text-warning"></i> ••••••••
                                     </span>
                                 </td>
 
-                                <td class="text-center">
+                                <td class="text-center" data-label="Acciones">
                                     <div class="btn-group shadow-sm">
                                         <a href="index.php?controller=Usuarios&action=editar&id=<?= $user['id_usu'] ?>" 
                                            class="btn btn-light btn-sm text-info border-right" 

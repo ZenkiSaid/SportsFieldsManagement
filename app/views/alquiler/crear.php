@@ -10,8 +10,41 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="assets/adminlte/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="assets/css/admin-responsive.css">
 
   <style>
+
+    /* =========================================
+       COLORES DE LOS ÍCONOS
+       ========================================= */
+    label i {
+        margin-right: 6px;
+        width: 18px; /* Ancho fijo para alineación perfecta */
+        text-align: center;
+    }
+
+    /* 1. Cancha (Rojo - Ubicación) */
+    label .fa-map-marker-alt { color: #dc3545; } 
+
+    /* 2. Fecha (Azul - Calendario) */
+    label .fa-calendar-alt { color: #007bff; } 
+
+    /* 3. Hora Inicio (Celeste - Info) */
+    label .fa-clock { color: #17a2b8; } 
+
+    /* 4. Hora Fin (Naranja - Tiempo acabando) */
+    label .fa-history { color: #fd7e14; } 
+
+    /* 5. Tarifa (Verde - Dinero) */
+    .fa-tag { color: #28a745; } 
+
+    /* 6. Método de Pago (Morado - Tarjeta) */
+    label .fa-credit-card { color: #6f42c1; } 
+
+    /* 7. Comprobante (Gris Oscuro - Archivo) */
+    label .fa-file-upload { color: #343a40; }
+
+    
     /* Estilos Sport Premium (Mismos del Dashboard) */
     .main-sidebar ::-webkit-scrollbar { width: 0px; background: transparent; }
     .main-sidebar { scrollbar-width: none; -ms-overflow-style: none; }
@@ -24,31 +57,30 @@
     }
     .nav-pills .nav-link:not(.active):hover { color: #28a745 !important; }
     
-    /* Estilos del Formulario */
+    /* Estilos del Formulario Limpio */
     .card-sport {
         border-top: 4px solid #28a745;
         border-radius: 12px;
         box-shadow: 0 0 20px rgba(0,0,0,0.05);
     }
-    .input-group-text {
-        background-color: #fff;
-        border-right: 0;
-        color: #6c757d;
+    
+    /* Ajuste para que los inputs se vean modernos */
+    .form-control, .custom-select {
+        border-radius: 8px !important;
+        height: calc(2.25rem + 10px) !important; /* Un poco más altos para tactil */
+        box-shadow: none !important;
+        border: 1px solid #ced4da;
     }
-    .form-control {
-        border-left: 0;
-    }
-    .form-control:focus {
-        border-color: #ced4da;
-        box-shadow: none;
-    }
-    /* Enfoque visual al escribir */
-    .input-group:focus-within .input-group-text {
+    
+    .form-control:focus, .custom-select:focus {
         border-color: #28a745;
-        color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
     }
-    .input-group:focus-within .form-control {
-        border-color: #28a745;
+
+    /* Etiquetas con icono */
+    label i {
+        margin-right: 5px;
+        color: #28a745; /* Color verde sport */
     }
   </style>
 </head>
@@ -130,117 +162,97 @@
                     <div class="card-header bg-white py-3">
                         <h3 class="card-title font-weight-bold text-secondary">Formulario de Reserva</h3>
                     </div>
+        <form action="index.php?controller=Alquiler&action=guardar" method="POST" enctype="multipart/form-data">
+            <div class="card-body bg-light">
+                
+                <h6 class="text-success font-weight-bold mb-3"><i class="fas fa-info-circle mr-1"></i> Detalles del Encuentro</h6>
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3 form-group">
+                                <label class="small font-weight-bold"><i class="fas fa-map-marker-alt"></i> Cancha</label>
+                                <select name="cancha" id="cancha" class="custom-select" required onchange="cargarPrecio()">
+                                    <option value="" disabled selected>-- Selecciona cancha --</option>
+                                    <?php foreach($canchas as $c): ?>
+                                        <option value="<?= $c['can_id'] ?>" data-precio="<?= $c['can_precio_hora'] ?>">
+                                            <?= $c['can_nombre'] ?> ($<?= $c['can_precio_hora'] ?>/h)
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-6 mb-3 form-group">
+                                <label class="small font-weight-bold"><i class="far fa-calendar-alt"></i> Fecha del Partido</label>
+                                <input type="date" name="fecha" class="form-control" min="<?= date('Y-m-d') ?>" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3 form-group">
+                                <label class="small font-weight-bold"><i class="far fa-clock"></i> Hora Inicio</label>
+                                <select name="hora_ini" id="hora_ini" class="custom-select" required onchange="calcularPrecio()">
+                                    <option value="">-- Inicio --</option>
+                                    <?php foreach($horarios as $h): ?>
+                                        <option value="<?= $h['hor_nombre'] ?>"><?= $h['hor_nombre'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-6 mb-3 form-group">
+                                <label class="small font-weight-bold"><i class="fas fa-history"></i> Hora Fin</label>
+                                <select name="hora_fin" id="hora_fin" class="custom-select" required onchange="calcularPrecio()">
+                                    <option value="">-- Fin --</option>
+                                    <?php foreach($horarios as $h): ?>
+                                        <option value="<?= $h['hor_nombre'] ?>"><?= $h['hor_nombre'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-light border d-flex justify-content-between align-items-center mt-2 mb-0">
+                            <span class="text-muted"><i class="fas fa-tag mr-2"></i>Tarifa estimada:</span>
+                            <div class="input-group" style="width: 150px;">
+                                <div class="input-group-prepend"><span class="input-group-text bg-transparent border-0 font-weight-bold text-success">$</span></div>
+                                <input type="text" name="valor_total" id="valor_total" class="form-control bg-transparent border-0 font-weight-bold text-success text-right" readonly value="0.00" style="font-size: 1.2em;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h6 class="text-success font-weight-bold mb-3"><i class="fas fa-wallet mr-1"></i> Pago y Confirmación</h6>
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3 form-group">
+                                <label class="small font-weight-bold"><i class="fas fa-credit-card"></i> Método de Pago</label>
+                                <select name="metodo_pago" class="custom-select" required>
+                                    <option value="" disabled selected>-- Seleccione --</option>
+                                    <option value="transferencia">Transferencia Bancaria</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-6 mb-3 form-group">
+                                <label class="small font-weight-bold"><i class="fas fa-file-upload"></i> Comprobante (Foto)</label>
+                                <div class="custom-file">
+                                    <input type="file" name="comprobante" class="custom-file-input" id="comprobante" accept=".pdf, .jpg, .png, .jpeg" required>
+                                    <label class="custom-file-label" for="comprobante">Subir archivo...</label>
+                                </div>
+                                <small class="text-muted mt-1 d-block">Formatos: JPG, PNG, PDF.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white text-right py-3">
+                <a href="index.php?controller=Dashboard&action=index" class="btn btn-light rounded-pill px-4 mr-2">Cancelar</a>
+                <button type="submit" class="btn btn-success rounded-pill px-5 font-weight-bold shadow-sm" onclick="return validarFormulario()">
+                    <i class="fas fa-check mr-2"></i> Confirmar Reserva
+                </button>
+            </div>
+        </form>
                     
-                    <form action="index.php?controller=Alquiler&action=guardar" method="POST" enctype="multipart/form-data">
-                        <div class="card-body bg-light">
-                            
-                            <h6 class="text-success font-weight-bold mb-3"><i class="fas fa-info-circle mr-1"></i> Detalles del Encuentro</h6>
-                            <div class="card shadow-sm border-0 mb-4">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6 form-group">
-                                            <label class="small font-weight-bold">Cancha</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-map-marker-alt text-success"></i></span></div>
-                                                <select name="cancha" id="cancha" class="form-control" required onchange="cargarPrecio()">
-                                                    <option value="" disabled selected>-- Selecciona cancha --</option>
-                                                    <?php foreach($canchas as $c): ?>
-                                                        <option value="<?= $c['can_id'] ?>" data-precio="<?= $c['can_precio_hora'] ?>">
-                                                            <?= $c['can_nombre'] ?> ($<?= $c['can_precio_hora'] ?>/h)
-                                                        </option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6 form-group">
-                                            <label class="small font-weight-bold">Fecha del Partido</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt text-primary"></i></span></div>
-                                                <input type="date" name="fecha" class="form-control" min="<?= date('Y-m-d') ?>" required>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6 form-group">
-                                            <label class="small font-weight-bold">Hora Inicio</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend"><span class="input-group-text"><i class="far fa-clock text-info"></i></span></div>
-                                                <select name="hora_ini" id="hora_ini" class="form-control" required onchange="calcularPrecio()">
-                                                    <option value="">-- Inicio --</option>
-                                                    <?php foreach($horarios as $h): ?>
-                                                        <option value="<?= $h['hor_nombre'] ?>"><?= $h['hor_nombre'] ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6 form-group">
-                                            <label class="small font-weight-bold">Hora Fin</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-history text-danger"></i></span></div>
-                                                <select name="hora_fin" id="hora_fin" class="form-control" required onchange="calcularPrecio()">
-                                                    <option value="">-- Fin --</option>
-                                                    <?php foreach($horarios as $h): ?>
-                                                        <option value="<?= $h['hor_nombre'] ?>"><?= $h['hor_nombre'] ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="alert alert-light border d-flex justify-content-between align-items-center mt-2 mb-0">
-                                        <span class="text-muted"><i class="fas fa-tag mr-2"></i>Tarifa estimada:</span>
-                                        <div class="input-group" style="width: 150px;">
-                                            <div class="input-group-prepend"><span class="input-group-text bg-transparent border-0 font-weight-bold text-success">$</span></div>
-                                            <input type="text" name="valor_total" id="valor_total" class="form-control bg-transparent border-0 font-weight-bold text-success text-right" readonly value="0.00" style="font-size: 1.2em;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <h6 class="text-success font-weight-bold mb-3"><i class="fas fa-wallet mr-1"></i> Pago y Confirmación</h6>
-                            <div class="card shadow-sm border-0">
-                                <div class="card-body">
-                                    <div class="row">
-                                        
-                                        <div class="col-md-6 form-group">
-                                            <label class="small font-weight-bold">Método de Pago</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-credit-card text-secondary"></i></span></div>
-                                                <select name="metodo_pago" class="form-control" required>
-                                                    <option value="" disabled selected>-- Seleccione --</option>
-                                                    <option value="transferencia">Transferencia Bancaria</option>
-                                                    <option value="debito">Tarjeta de Débito/Crédito</option>
-                                                    <option value="efectivo_local">Pago en Local (Presencial)</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6 form-group">
-                                            <label class="small font-weight-bold">Comprobante (Foto)</label>
-                                            <div class="input-group">
-                                                <div class="custom-file">
-                                                    <input type="file" name="comprobante" class="custom-file-input" id="comprobante" accept=".pdf, .jpg, .png, .jpeg" required>
-                                                    <label class="custom-file-label" for="comprobante">Subir archivo...</label>
-                                                </div>
-                                            </div>
-                                            <small class="text-muted">Formatos: JPG, PNG, PDF.</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="card-footer bg-white text-right py-3">
-                            <a href="index.php?controller=Dashboard&action=index" class="btn btn-light rounded-pill px-4 mr-2">Cancelar</a>
-                            <button type="submit" class="btn btn-success rounded-pill px-5 font-weight-bold shadow-sm" onclick="return validarFormulario()">
-                                <i class="fas fa-check mr-2"></i> Confirmar Reserva
-                            </button>
-                        </div>
-                    </form>
                 </div>
 
             </div>
@@ -261,63 +273,75 @@
 <script src="assets/adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 
 <script>
-$(function () {
-  bsCustomFileInput.init();
-});
+    $(function () {
+    bsCustomFileInput.init();
+    
+    });
 
-let precioPorHora = 0;
+    let precioPorHora = 0;
 
-function cargarPrecio() {
-    const canchaSelect = document.getElementById('cancha');
-    const selectedOption = canchaSelect.options[canchaSelect.selectedIndex];
-    precioPorHora = parseFloat(selectedOption.getAttribute('data-precio')) || 0;
-    calcularPrecio();
-}
+    function cargarPrecio() {
+        const canchaSelect = document.getElementById('cancha');
+        const selectedOption = canchaSelect.options[canchaSelect.selectedIndex];
+        precioPorHora = parseFloat(selectedOption.getAttribute('data-precio')) || 0;
+        calcularPrecio();
+    }
 
-function calcularPrecio() {
-    const ini = document.getElementById('hora_ini').value;
-    const fin = document.getElementById('hora_fin').value;
-    const inputTotal = document.getElementById('valor_total');
+    function calcularPrecio() {
+        const ini = document.getElementById('hora_ini').value;
+        const fin = document.getElementById('hora_fin').value;
+        const inputTotal = document.getElementById('valor_total');
 
-    if(ini && fin && precioPorHora > 0) {
-        // Usamos una fecha base para comparar solo las horas
-        const d1 = new Date("2000-01-01 " + ini);
-        const d2 = new Date("2000-01-01 " + fin);
-        
-        let diff = (d2 - d1) / 1000 / 60 / 60; // Diferencia en horas
-        
-        if (diff >= 1) {
-            const total = diff * precioPorHora;
-            inputTotal.value = total.toFixed(2);
+        if(ini && fin && precioPorHora > 0) {
+            // Usamos una fecha base para comparar solo las horas
+            const d1 = new Date("2000-01-01 " + ini);
+            const d2 = new Date("2000-01-01 " + fin);
+            
+            let diff = (d2 - d1) / 1000 / 60 / 60; // Diferencia en horas
+            
+            if (diff >= 1) {
+                const total = diff * precioPorHora;
+                inputTotal.value = total.toFixed(2);
+            } else {
+                inputTotal.value = '0.00';
+            }
         } else {
             inputTotal.value = '0.00';
         }
-    } else {
-        inputTotal.value = '0.00';
-    }
-}
-
-function validarFormulario() {
-    const ini = document.getElementById('hora_ini').value;
-    const fin = document.getElementById('hora_fin').value;
-    
-    // Validar campos obligatorios básicos
-    if (!ini || !fin) {
-        alert('Por favor completa el horario de inicio y fin.');
-        return false;
     }
 
-    const d1 = new Date("2000-01-01 " + ini);
-    const d2 = new Date("2000-01-01 " + fin);
-    const diff = (d2 - d1) / 1000 / 60 / 60;
+    function validarFormulario() {
+        const ini = document.getElementById('hora_ini').value;
+        const fin = document.getElementById('hora_fin').value;
+        
+        // Validar campos obligatorios básicos
+        if (!ini || !fin) {
+            alert('Por favor completa el horario de inicio y fin.');
+            return false;
+        }
 
-    if (diff < 1) {
-        alert('La duración mínima del alquiler es de 1 hora.');
-        return false;
+        const d1 = new Date("2000-01-01 " + ini);
+        const d2 = new Date("2000-01-01 " + fin);
+        const diff = (d2 - d1) / 1000 / 60 / 60;
+
+        if (diff < 1) {
+            alert('La duración mínima del alquiler es de 1 hora.');
+            return false;
+        }
+        
+        return true;
     }
-    
-    return true;
-}
+
+        // --- AGREGA ESTO AL FINAL DE TU SCRIPT ---
+
+    // Detecta cuando la página se muestra, INCLUYENDO cuando vuelves con el botón "Atrás"
+        window.addEventListener('pageshow', function(event) {
+        // Si el campo cancha ya tiene un valor seleccionado, forzamos el cálculo
+        if(document.getElementById('cancha').value) {
+            cargarPrecio();
+        }
+    });
+
 </script>
 </body>
 </html>

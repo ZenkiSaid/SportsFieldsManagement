@@ -15,11 +15,14 @@
             <div class="logo">
              <img src="assets/img/minilogo.png" alt="Logo" class="mi-logo-img">
                 <span>Patos Sport</span>
+            </div>
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="fas fa-bars"></i>
             </div>  
             <ul class="nav-links">
                 <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#canchas">Canchas</a></li>
-                <li><a href="#torneos">Torneos</a></li>
+                <li><a href="#noticias">Noticias</a></li>
                 <li><a href="#agenda">Agenda</a></li>
                 <li><a href="#contacto">Contacto</a></li>
                 <li><a href="index.php?controller=Auth&action=login" class="btn-login">Iniciar Sesión</a></li>
@@ -40,26 +43,31 @@
     <section class="features">
         <h2 class="section-title">La Experiencia Premium</h2>
         <div class="features-grid">
+            
             <div class="feature-card">
                 <i class="fas fa-calendar-check"></i>
                 <h3>Reserva Online</h3>
                 <p>Olvídate de las llamadas. Sistema de reservas automático 24/7 desde tu celular.</p>
             </div>
+
             <div class="feature-card">
-                <i class="fas fa-trophy"></i>
-                <h3>Ligas Competitivas</h3>
-                <p>Organizamos los mejores torneos con premios en efectivo y estadísticas en vivo.</p>
+                <i class="fas fa-tshirt"></i>
+                <h3>Equipamiento Completo</h3>
+                <p>Incluimos balones profesionales y chalecos limpios totalmente gratis con tu reserva. ¡Solo preocúpate por jugar!</p>
             </div>
+
             <div class="feature-card">
                 <i class="fas fa-shield-alt"></i>
                 <h3>Instalaciones Top</h3>
-                <p>Césped sintético FIFA Quality, chalecos limpios y balones profesionales.</p>
+                <p>Lo mejor para ti . Nuestras canchas sintéticas están siempre en perfecto estado para que disfrutes el juego.</p>
             </div>
+
             <div class="feature-card">
-                <i class="fas fa-video"></i>
-                <h3>Partidos Grabados</h3>
-                <p>Revive tus mejores jugadas con nuestro sistema de cámaras (Servicio opcional).</p>
+                <i class="fas fa-utensils"></i>
+                <h3>Snack Bar & Bebidas</h3>
+                <p>Contamos con una amplia variedad de snacks, bebidas y comida para recuperar energías después del partido.</p>
             </div>
+
         </div>
     </section>
 
@@ -68,28 +76,28 @@
         <h2 class="section-title dark">NUESTRAS CANCHAS</h2>
         
         <div class="slider-container">
-            <div class="mySlides fade">
-                <img src="assets/img/home/cancha1.png" alt="Cancha Patos Foto 1">
-            </div>
-            <div class="mySlides fade">
-                <img src="assets/img/home/cancha2.png" alt="Cancha Patos Foto 2">
-            </div>
-            <div class="mySlides fade">
-                <img src="assets/img/home/cancha3.png" alt="Cancha Patos Foto 3">
-            </div>
-
+            
+            <?php if (!empty($sliderCanchas)): ?>
+                <?php foreach($sliderCanchas as $foto): ?>
+                    <div class="mySlides fade">
+                        <img src="uploads/home_canchas/<?= $foto['hc_imagen'] ?>" alt="Cancha Patos Dinámica" style="width:100%">
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="mySlides fade" style="display: block;">
+                    <img src="assets/img/home/cancha1.png" alt="Cancha Patos Foto Default" style="width:100%">
+                </div>
+            <?php endif; ?>
             <a class="prev" onclick="plusSlides(-1)">❮</a>
             <a class="next" onclick="plusSlides(1)">❯</a>
         </div>
-        <br>
-
-        <br>
+        
 
         <div class="cancha-info-detalle">
             <h3>Cancha Patos</h3>
             <p>
                 Diseñada para el alto rendimiento. Nuestra cancha principal ofrece una experiencia de juego superior gracias a su 
-                <strong>césped sintético Monofilamento de 60mm</strong>. 
+                <strong>césped sintético</strong>. 
                 Garantizamos un rebote natural, menor impacto físico y un entorno seguro para disfrutar del mejor fútbol.
             </p>
             
@@ -102,45 +110,61 @@
         </div>
     </section>
 
-    <section id="torneos" style="padding: 4rem 0; background-color: #111;">
-        <div class="container">
-            <h2 class="section-title" style="color: white; margin-bottom: 2rem;">Torneos Realizados</h2>
+   <section id="noticias" style="padding: 5rem 0; background-color: #111; border-top: 1px solid #333;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
             
-            <div class="gallery-grid" style="margin-bottom: 4rem;">
-                <div class="gallery-item">
-                    <img src="assets/img/home/equipo1.jpg" alt="Foto Torneo 1" onerror="this.src='https://via.placeholder.com/400x300?text=Torneo+1'">
-                    <div class="gallery-overlay">Sub50</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="assets/img/home/equipo2.jpg" alt="Foto Torneo 2" onerror="this.src='https://via.placeholder.com/400x300?text=Torneo+2'">
-                    <div class="gallery-overlay">Sub50</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="assets/img/home/equipo3.jpg" alt="Foto Torneo 3" onerror="this.src='https://via.placeholder.com/400x300?text=Torneo+3'">
-                    <div class="gallery-overlay">Sub50</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="assets/img/home/equipo4.jpg" alt="Foto Torneo 4" onerror="this.src='https://via.placeholder.com/400x300?text=Torneo+4'">
-                    <div class="gallery-overlay">Sub50</div>
-                </div>
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2 class="section-title" style="color: white; text-transform: uppercase; font-size: 2.5rem; margin-bottom: 10px;">
+                    Noticias <span style="color: var(--primary);">Pato Sport</span>
+                </h2>
+                <p style="color: #888;">Entérate de nuestros próximos eventos y promociones.</p>
             </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px;">
+                
+                <?php if (isset($noticias) && !empty($noticias)): ?>
+                    <?php foreach ($noticias as $noti): ?>
+                        <div class="news-card" style="background: #1a1a1a; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: transform 0.3s; border: 1px solid #333;">
+                            
+                            <div style="height: 200px; overflow: hidden; position: relative;">
+                                <?php if(!empty($noti['not_imagen'])): ?>
+                                    <img src="uploads/noticias/<?= $noti['not_imagen'] ?>" alt="Noticia" style="width: 100%; height: 100%; object-fit: cover; transition: 0.5s;">
+                                <?php else: ?>
+                                    <div style="width: 100%; height: 100%; background: #333; display: flex; align-items: center; justify-content: center; color: #555;">
+                                        <i class="fas fa-image fa-3x"></i>
+                                    </div>
+                                <?php endif; ?>
+                                
+                                <div style="position: absolute; top: 15px; left: 15px; background: var(--primary); color: #000; padding: 5px 12px; border-radius: 5px; font-weight: bold; font-size: 0.85rem; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+                                    <i class="far fa-calendar-alt"></i> <?= date('d M', strtotime($noti['not_fecha_inicio'])) ?>
+                                </div>
+                            </div>
 
-            <h2 class="section-title" style="color: var(--primary); margin-bottom: 2rem;">Partidos Grabados</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <video controls muted>
-                        <source src="assets/img/home/video1.mp4" type="video/mp4">
-                        Tu navegador no soporta videos.
-                    </video>
-                    <div class="gallery-overlay">Resumen Final</div>
-                </div>
-                <div class="gallery-item">
-                    <video controls muted>
-                        <source src="assets/img/home/video2.mp4" type="video/mp4">
-                        Tu navegador no soporta videos.
-                    </video>
-                    <div class="gallery-overlay">Mejores Goles</div>
-                </div>
+                            <div style="padding: 20px;">
+                                <p style="color: #ddd; font-size: 1rem; line-height: 1.5; margin-bottom: 20px; min-height: 60px;">
+                                    <?= htmlspecialchars($noti['not_descripcion']) ?>
+                                </p>
+
+                                <div style="border-top: 1px solid #333; padding-top: 15px; font-size: 0.9rem; color: #888;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <span><i class="fas fa-play text-success" style="color: #28a745; margin-right: 5px;"></i> Inicia:</span>
+                                        <span style="color: #fff;"><?= date('d/m/Y', strtotime($noti['not_fecha_inicio'])) ?></span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span><i class="fas fa-stop text-danger" style="color: #dc3545; margin-right: 5px;"></i> Finaliza:</span>
+                                        <span style="color: #fff;"><?= date('d/m/Y', strtotime($noti['not_fecha_fin'])) ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 50px; background: #1a1a1a; border-radius: 10px; color: #666;">
+                        <i class="far fa-newspaper fa-3x" style="margin-bottom: 15px; opacity: 0.5;"></i>
+                        <p>No hay noticias publicadas por el momento.</p>
+                    </div>
+                <?php endif; ?>
+
             </div>
         </div>
     </section>
@@ -173,19 +197,19 @@
                                     $horaFin = substr($partido['alq_hora_fin'], 0, 5);
                                 ?>
                                 <tr style="border-bottom: 1px solid #333;">
-                                    <td style="padding: 1.2rem; font-weight: 600;">
+                                    <td data-label="Fecha" style="padding: 1.2rem; font-weight: 600;">
                                         <i class="far fa-calendar-alt" style="color: #666; margin-right: 8px;"></i>
                                         <?= $fechaObj->format('d/m/Y') ?>
                                     </td>
-                                    <td style="padding: 1.2rem;">
+                                    <td data-label="Horario" style="padding: 1.2rem;">
                                         <span style="background: #222; padding: 5px 12px; border-radius: 4px; font-size: 0.9rem; border: 1px solid #333;">
                                             <?= $horaIni ?> - <?= $horaFin ?>
                                         </span>
                                     </td>
-                                    <td style="padding: 1.2rem; color: #ccc;">
+                                    <td data-label="Cancha" style="padding: 1.2rem; color: #ccc;">
                                         <?= htmlspecialchars($partido['can_nombre']) ?>
                                     </td>
-                                    <td style="padding: 1.2rem; text-align: right;">
+                                    <td data-label="Estado" style="padding: 1.2rem; text-align: right;">
                                         <span style="color: #000; background: var(--primary); font-weight: 800; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; text-transform: uppercase;">
                                             OCUPADO
                                         </span>
@@ -204,13 +228,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <div style="text-align: center; margin-top: 3rem;">
-                <a href="index.php?controller=Auth&action=register" class="btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem; box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);">
-                    <i class="fas fa-futbol" style="margin-right: 10px;"></i> ¡Quiero Reservar!
-                </a>
-            </div>
-
         </div>
     </section>
 
@@ -278,6 +295,18 @@
             }
             slides[slideIndex-1].style.display = "block";  
         }
+        // Script para el Menú Responsivo
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        if(menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }                    
+
     </script>
+
+   
 </body>
 </html>

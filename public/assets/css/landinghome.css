@@ -97,12 +97,19 @@ body {
   border-color: var(--primary);
   color: #000;
 }
+/* --- BOTÓN HAMBURGUESA (Oculto en PC) --- */
+.menu-toggle {
+  display: none;
+  font-size: 1.8rem;
+  color: #fff;
+  cursor: pointer;
+}
 
 /* --- HERO SECTION --- */
 .hero {
   background:
     linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 50, 25, 0.7)),
-    url("../img/home/cancha_hero.avif");
+    url("../img/home/homval.png");
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -592,22 +599,128 @@ body {
   color: #666;
 }
 
-/* RESPONSIVE */
+/* =========================================
+   RESPONSIVE DESIGN (CELULARES - VERSIÓN DEFINITIVA FINAL)
+   ========================================= */
 @media (max-width: 768px) {
-  .hero-content h1 {
-    font-size: 2.5rem;
+  /* 1. NAVBAR Y MENÚ */
+  .navbar {
+    padding: 0.8rem 1.5rem;
   }
+  .nav-container {
+    width: 100%;
+    padding: 0;
+    justify-content: space-between;
+  }
+  .menu-toggle {
+    display: block;
+  }
+
   .nav-links {
     display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: rgba(10, 10, 10, 0.98);
+    flex-direction: column;
+    padding: 2rem 0;
+    gap: 1.5rem;
+    border-bottom: 2px solid var(--primary);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
   }
-  .section-title {
-    font-size: 2rem;
+  .nav-links.active {
+    display: flex;
   }
-  .hero {
-    padding-left: 0;
-    justify-content: center;
+  .btn-login {
+    width: 80%;
     text-align: center;
   }
+
+  /* 2. HERO (INICIO) */
+  .hero {
+    height: auto;
+    min-height: auto;
+    padding-top: 120px;
+    padding-bottom: 40px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    align-items: flex-start;
+    text-align: center;
+    background-position: 65% center;
+  }
+  .hero-content {
+    margin-top: 0;
+    width: 100%;
+  }
+  .hero-content h1 {
+    font-size: 2.2rem;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: #eee;
+  }
+  .btn-primary {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+
+  /* 3. EXPERIENCIA PREMIUM */
+  .features {
+    padding: 3rem 1.5rem;
+  }
+
+  /* 4. SECCIÓN CANCHAS */
+  .canchas-gallery {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+  .section-subtitle {
+    font-size: 0.9rem;
+  }
+
+  /* 5. NOTICIAS Y AGENDA (AQUÍ ESTÁ EL ARREGLO) */
+  #noticias,
+  #agenda {
+    padding-top: 3rem !important; /* Quitamos el espacio gigante de arriba */
+    padding-bottom: 3rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  /* 6. CARRUSEL Y TARJETAS */
+  .slider-container {
+    height: 250px;
+    margin: 2rem auto;
+  }
+  .mySlides img {
+    height: 250px;
+  }
+
+  .cancha-info-detalle {
+    padding: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .features-list {
+    flex-direction: column;
+    width: 100%;
+  }
+  .features-list span {
+    width: 100%;
+    justify-content: center;
+  }
+
   .footer-container {
     text-align: center;
   }
@@ -616,10 +729,78 @@ body {
   .social-links {
     justify-content: center;
   }
-  .slider-container {
-    height: 300px;
+
+  /* --- 7. TABLA RESPONSIVA TIPO TARJETA (CARD VIEW - VERSIÓN FINAL) --- */
+
+  /* 1. Corrección del Contenedor (Quita el scroll horizontal y el fondo sobrante) */
+  #agenda div[style*="overflow-x: auto"] {
+    overflow-x: hidden !important; /* Desactiva el deslizamiento */
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
   }
-  .mySlides img {
-    height: 300px;
+
+  /* 2. Forzamos a la tabla a ajustarse al 100% del celular (Rompe el min-width de 600px) */
+  #agenda table {
+    display: block !important;
+    min-width: 100% !important; /* CLAVE: Anula los 600px del HTML */
+    width: 100% !important;
+  }
+
+  #agenda thead,
+  #agenda tbody,
+  #agenda th,
+  #agenda td,
+  #agenda tr {
+    display: block !important;
+  }
+
+  /* 3. Ocultamos los encabezados de la tabla original */
+  #agenda thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  /* 4. Estilo de cada fila convertida en "Tarjeta" */
+  #agenda tbody tr {
+    border: 1px solid #333 !important;
+    border-radius: 15px !important;
+    margin-bottom: 1.5rem !important;
+    background-color: #151515 !important; /* Fondo negro de la tarjeta */
+    padding: 15px !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* 5. Estilo de cada dato (celda) dentro de la tarjeta */
+  #agenda tbody td {
+    border: none !important;
+    border-bottom: 1px solid #333 !important;
+    position: relative !important;
+    padding-left: 50% !important; /* Espacio reservado para el título verde */
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    text-align: right !important; /* Alinea el texto del dato a la derecha */
+    color: #eee !important;
+  }
+
+  #agenda tbody td:last-child {
+    border-bottom: none !important;
+  }
+
+  /* 6. Ponemos los Títulos Verdes a la izquierda (usando data-label) */
+  #agenda tbody td::before {
+    content: attr(data-label);
+    position: absolute !important;
+    left: 0 !important;
+    top: 12px !important; /* Alineación vertical */
+    width: 45% !important;
+    padding-right: 10px !important;
+    white-space: nowrap !important;
+    text-align: left !important;
+    font-weight: 800 !important;
+    color: var(--primary) !important;
+    text-transform: uppercase !important;
+    font-size: 0.85rem !important;
   }
 }

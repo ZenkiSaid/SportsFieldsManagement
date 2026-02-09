@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="assets/adminlte/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="assets/css/admin-responsive.css">
 
   <style>
     /* Ocultar Scrollbar */
@@ -180,9 +181,10 @@
               </div>
               
               <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap align-middle">
+                <table class="table table-hover text-nowrap align-middle table-mobile-responsive">
                   <thead class="bg-light text-uppercase text-secondary text-xs">
                     <tr>
+                      <th class="border-0 pl-md-4">ID</th>
                       <th class="pl-4 border-0">Fecha</th>
                       
                       <th class="border-0 text-center">Lugar</th>
@@ -196,40 +198,48 @@
                     <?php if (!empty($historial)): ?>
                       <?php foreach ($historial as $res): ?>
                       <tr>
-                        <td class="pl-4 font-weight-bold text-dark">
-                            <i class="far fa-calendar-alt text-muted mr-1"></i> 
-                            <?= date('d/m/Y', strtotime($res['alq_fecha'])) ?>
-                        </td>
-                        
-                        <td class="text-center">
-                            <span class="text-dark">
-                                <i class="fas fa-map-marker-alt text-danger mr-1"></i> 
-                                <?= htmlspecialchars($res['can_nombre']) ?>
-                            </span>
-                        </td>
+                         <td class="pl-md-4 font-weight-bold text-secondary" data-label="ID">
+                            #<?= $res['alq_id'] ?>
+                          </td>
 
-                        <td class="text-center text-muted font-weight-bold">
-                            <?= substr($res['alq_hora_ini'], 0, 5) ?> - <?= substr($res['alq_hora_fin'], 0, 5) ?>
-                        </td>
-                        <td class="text-center">
-                             <?php if(!empty($res['alq_comprobante'])): ?>
-                                <a href="uploads/comprobantes/<?= $res['alq_comprobante'] ?>" target="_blank" class="btn btn-xs btn-outline-info rounded-pill px-3">
-                                    <i class="fas fa-eye mr-1"></i> Ver
-                                </a>
-                            <?php else: ?>
-                                <span class="text-muted text-xs">Pendiente</span>
-                            <?php endif; ?>
-                        </td>
-                        <td class="text-center">
-                            <?php 
-                                $s = strtoupper($res['est_nombre']);
-                                $color = 'secondary';
-                                if(strpos($s, 'APROBADO')!==false) $color='success';
-                                elseif(strpos($s, 'REGISTRADO')!==false) $color='warning';
-                            ?>
-                            <span class="badge badge-<?= $color ?> px-3"><?= $res['est_nombre'] ?></span>
-                        </td>
-                      </tr>
+                          <td class="pl-4 font-weight-bold text-dark" data-label="Fecha" >
+                              <div class="d-flex align-items-center justify-content-end-mobile">
+                                <i class="far fa-calendar-alt text-muted mr-1"></i> 
+                                <span class="font-weight-bold text-dark">
+                                 <?= date('d/m/Y', strtotime($res['alq_fecha'])) ?>
+                                </span>
+                              </div>  
+                          </td>
+                          
+                          <td class="text-center" data-label="Lugar">
+                              <span class="text-dark">
+                                  <i class="fas fa-map-marker-alt text-danger mr-1"></i> 
+                                  <?= htmlspecialchars($res['can_nombre']) ?>
+                              </span>
+                          </td>
+
+                          <td class="text-center text-muted font-weight-bold" data-label="Horario" >
+                              <?= substr($res['alq_hora_ini'], 0, 5) ?> - <?= substr($res['alq_hora_fin'], 0, 5) ?>
+                          </td>
+                          <td class="text-center" data-label="Pago">
+                              <?php if(!empty($res['alq_comprobante'])): ?>
+                                  <a href="uploads/comprobantes/<?= $res['alq_comprobante'] ?>" target="_blank" class="btn btn-xs btn-outline-info rounded-pill px-3">
+                                      <i class="fas fa-eye mr-1"></i> Ver
+                                  </a>
+                              <?php else: ?>
+                                  <span class="text-muted text-xs">Pendiente</span>
+                              <?php endif; ?>
+                          </td>
+                          <td class="text-center" data-label="Estado">
+                              <?php 
+                                  $s = strtoupper($res['est_nombre']);
+                                  $color = 'secondary';
+                                  if(strpos($s, 'APROBADO')!==false) $color='success';
+                                  elseif(strpos($s, 'REGISTRADO')!==false) $color='warning';
+                              ?>
+                              <span class="badge badge-<?= $color ?> px-3"><?= $res['est_nombre'] ?></span>
+                          </td>
+                        </tr>
                       <?php endforeach; ?>
                     <?php else: ?>
                       <tr><td colspan="5" class="text-center py-4 text-muted">No hay registros recientes.</td></tr>

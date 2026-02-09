@@ -52,44 +52,48 @@ class AuthController extends Controller {
     /**
      * Procesa el registro de un nuevo usuario
      */
+   /**
+     * Muestra el registro Y TAMBIÉN procesa el guardado
+     */
     public function register() {
+        
+        // A. SI ES UNA PETICIÓN POST (Significa que dieron clic a "Registrarme")
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Recoger datos del formulario
-            $nombre_usu = isset($_POST['nombre_usu']) ? trim($_POST['nombre_usu']) : '';
-            $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-            $password = isset($_POST['password']) ? $_POST['password'] : '';
-            $confirm = isset($_POST['password_confirm']) ? $_POST['password_confirm'] : '';
+            
+            // 1. Recoger datos (OJO: Usamos los 'name' del formulario nuevo)
+            $nombre_usu = isset($_POST['nombre']) ? trim($_POST['nombre']) : ''; 
+            $email      = isset($_POST['correo']) ? trim($_POST['correo']) : '';
+            $password   = isset($_POST['password']) ? $_POST['password'] : '';
+            $confirm    = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '';
 
-            // 1. Validar que las contraseñas coincidan
+            // 2. Validar contraseñas
             if ($password !== $confirm) {
                 header('Location: index.php?controller=Auth&action=register&msg=mismatch');
                 exit;
             }
 
-            // 2. Intentar registrar en la base de datos
+            // 3. Llamar al Modelo
             $usuarioModel = new Usuario($this->db);
+            // Asegúrate de pasar las variables que acabamos de recoger
             $resultado = $usuarioModel->registrar($nombre_usu, $email, $password);
 
             if ($resultado['success']) {
-                // ÉXITO: Iniciamos el flujo de verificación de email
-                
-                // Generamos un código de prueba (En producción esto se enviaría por email real)
-                $_SESSION['codigo_verificacion'] = 'ABC12345'; 
+                // ÉXITO: Pasamos a verificar email
+                $_SESSION['codigo_verificacion'] = 'ABC12345'; // Código simulado
                 $_SESSION['temp_email'] = $email;
-
-                // Redirigimos a la pantalla de ingresar código
                 header('Location: index.php?controller=Auth&action=verificaremail');
                 exit;
             } else {
-                // FALLO: Verificamos si es por usuario duplicado u otro error
+                // ERROR: Usuario duplicado o fallo en BD
                 $msg = (strpos($resultado['message'], 'existe') !== false) ? 'exists' : 'error';
                 header('Location: index.php?controller=Auth&action=register&msg=' . $msg);
                 exit;
             }
-        } else {
-            // Mostrar formulario de registro
-            $this->view('auth/register');
-        }
+        } 
+        
+        // B. SI ES UNA PETICIÓN GET (Solo quieren ver el formulario)
+        // Simplemente mostramos la vista
+        $this->view('auth/register');
     }
 
     /**

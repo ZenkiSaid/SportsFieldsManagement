@@ -29,22 +29,24 @@ class NoticiasController extends Controller {
         require_once '../app/views/dashboards/admin.php';
     }
 
-    // --- GUARDAR CON SUBIDA DE IMAGEN ---
+    // --- GUARDAR ---
     public function guardar() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $modelo = new Noticia($this->db);
             
-            // Procesar Imagen
-            $ruta_imagen = ''; // Valor por defecto
+            // 1. Procesar Imagen
+            $nombre_imagen = ''; 
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-                $ruta_imagen = $this->subirImagen($_FILES['imagen']);
-                if (!$ruta_imagen) {
-                    echo "<script>alert('Error al subir la imagen. Intenta de nuevo.'); window.history.back();</script>";
+                // Subimos la imagen y obtenemos solo el nombre (ej: noticia_123.jpg)
+                $nombre_imagen = $this->subirImagen($_FILES['imagen']);
+                if (!$nombre_imagen) {
+                    echo "<script>alert('Error al subir la imagen. Verifica permisos de carpeta.'); window.history.back();</script>";
                     return;
                 }
             }
 
-            if ($modelo->guardar($ruta_imagen, $_POST['fecha_inicio'], $_POST['fecha_fin'], $_POST['descripcion'])) {
+            // 2. Guardar en BD (Sin título, ya que tu BD no tiene esa columna)
+            if ($modelo->guardar($nombre_imagen, $_POST['fecha_inicio'], $_POST['fecha_fin'], $_POST['descripcion'])) {
                 header("Location: index.php?controller=Noticias&action=index&msg=save_ok");
             } else {
                 echo "<script>alert('Error al guardar en BD'); window.history.back();</script>";
@@ -68,25 +70,26 @@ class NoticiasController extends Controller {
         }
     }
 
-    // --- ACTUALIZAR CON IMAGEN OPCIONAL ---
+    // --- ACTUALIZAR ---
     public function actualizar() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $modelo = new Noticia($this->db);
             $id = $_POST['id'];
             
-            // 1. Obtener la imagen actual por si no sube una nueva
+            // 1. Obtener imagen actual (solo el nombre)
             $noticiaActual = $modelo->obtenerPorId($id);
-            $ruta_final = $noticiaActual['not_imagen'];
+            $nombre_final = $noticiaActual['not_imagen'];
 
-            // 2. Si el usuario subió una NUEVA imagen
+            // 2. Si sube nueva imagen, la reemplazamos
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-                $nueva_ruta = $this->subirImagen($_FILES['imagen']);
-                if ($nueva_ruta) {
-                    $ruta_final = $nueva_ruta; // Reemplazamos la ruta anterior
+                $nuevo_nombre = $this->subirImagen($_FILES['imagen']);
+                if ($nuevo_nombre) {
+                    $nombre_final = $nuevo_nombre;
+                    // Opcional: Aquí podrías borrar la imagen vieja del servidor
                 }
             }
 
-            if ($modelo->actualizar($id, $ruta_final, $_POST['fecha_inicio'], $_POST['fecha_fin'], $_POST['descripcion'])) {
+            if ($modelo->actualizar($id, $nombre_final, $_POST['fecha_inicio'], $_POST['fecha_fin'], $_POST['descripcion'])) {
                 header("Location: index.php?controller=Noticias&action=index&msg=update_ok");
             } else {
                 echo "<script>alert('Error al actualizar'); window.history.back();</script>";
@@ -97,27 +100,31 @@ class NoticiasController extends Controller {
     public function eliminar() {
         if (isset($_GET['id'])) {
             $modelo = new Noticia($this->db);
+            // Aquí también podrías borrar el archivo físico antes de borrar el registro
             $modelo->eliminar($_GET['id']);
             header("Location: index.php?controller=Noticias&action=index&msg=delete_ok");
         }
     }
 
-    // --- FUNCIÓN PRIVADA PARA SUBIR IMÁGENES ---
+    // --- FUNCIÓN PRIVADA CORREGIDA ---
     private function subirImagen($archivo) {
-        // Carpeta destino (Asegúrate que exista: public/assets/img/noticias/)
-        $carpeta_destino = 'assets/img/noticias/';
+        // 1. Definir carpeta correcta (coincide con el Home)
+        // La ruta es relativa al index.php que está en public/
+        $carpeta_destino = 'uploads/noticias/';
         
-        // Generar nombre único para no sobreescribir
+        // 2. Crear carpeta si no existe
+        if (!file_exists($carpeta_destino)) {
+            mkdir($carpeta_destino, 0777, true);
+        }
+        
+        // 3. Generar nombre único
         $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
-        $nombre_archivo = uniqid('noticia_') . '.' . $extension;
-        $ruta_completa = $carpeta_destino . $nombre_archivo;
+        $nombre_archivo = uniqid('news_') . '.' . $extension;
+        $ruta_destino = $carpeta_destino . $nombre_archivo;
 
-        // Mover el archivo de temporal a la carpeta final
-        // NOTA: Usamos ../public/ porque el controlador suele estar en app/controllers
-        // Ajusta esta ruta de 'move_uploaded_file' según tu estructura real.
-        // Asumiendo que index.php está en public/, la ruta relativa es directa.
-        if (move_uploaded_file($archivo['tmp_name'], $ruta_completa)) {
-            return $ruta_completa; // Retornamos la ruta para guardar en BD
+        // 4. Mover y retornar SOLO EL NOMBRE
+        if (move_uploaded_file($archivo['tmp_name'], $ruta_destino)) {
+            return $nombre_archivo; // Retornamos "news_123.jpg" para guardar en BD
         }
         return false;
     }

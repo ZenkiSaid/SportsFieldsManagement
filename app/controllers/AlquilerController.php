@@ -75,8 +75,33 @@ class AlquilerController extends Controller {
             
             // Opcional: Verificar conflicto de horario antes de guardar (Doble seguridad)
             if ($alquilerModel->verificarConflicto($datos['cancha'], $datos['fecha'], $datos['hora_ini'], $datos['hora_fin'])) {
-                 echo "<script>alert('Error: El horario seleccionado ya está ocupado.'); window.history.back();</script>";
-                 exit;
+                echo '
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                </head>
+                <body style="background-color: #f4f6f9;">
+                    <script>
+                        Swal.fire({
+                            icon: "error",
+                            title: "¡Horario Ocupado!",
+                            text: "Esa cancha ya está reservada a esa hora. Por favor elige otro horario.",
+                            confirmButtonText: "Entendido, volver",
+                            confirmButtonColor: "#d33",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.history.back(); // Esto te devuelve al formulario con los datos
+                            }
+                        });
+                    </script>
+                </body>
+                </html>
+                ';
+    
+                exit; // Importante para detener y no guardar nada 
             }
 
             if ($alquilerModel->registrarAlquiler($datos)) {
