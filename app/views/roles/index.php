@@ -8,7 +8,7 @@
             </div>
             
             <div class="card-body table-responsive p-0">
-                <table class="table table-hover align-middle">
+                <table class="table table-hover align-middle text-nowrap mb-0 table-mobile-responsive">
                     <thead class="bg-light text-uppercase text-secondary text-xs">
                         <tr>
                             <th class="pl-4 border-0">ID</th>
@@ -22,9 +22,9 @@
                         <?php if (!empty($usuarios)): ?>
                             <?php foreach ($usuarios as $u): ?>
                             <tr>
-                                <td class="pl-4 text-muted font-weight-bold">#<?= $u['id_usu'] ?></td>
+                                <td class="pl-4 text-muted font-weight-bold" data-label="ID">#<?= $u['id_usu'] ?></td>
                                 
-                                <td class="font-weight-bold text-dark">
+                                <td class="font-weight-bold text-dark" data-label="Usuario">
                                     <div class="d-flex align-items-center">
                                         <div class="bg-light rounded-circle d-flex justify-content-center align-items-center mr-2" style="width: 30px; height: 30px;">
                                             <i class="fas fa-user text-muted"></i>
@@ -33,12 +33,12 @@
                                     </div>
                                 </td>
 
-                                <td class="text-muted">
+                                <td class="text-muted" data-label="Fecha Registro">
                                     <i class="far fa-calendar-alt mr-1"></i> 
                                     <?= date('d/m/Y', strtotime($u['created_at'] ?? 'now')) ?>
                                 </td>
 
-                                <td class="text-center">
+                                <td class="text-center" data-label="Rol Actual">
                                     <?php 
                                         $badge = 'secondary';
                                         if($u['id_rol'] == 1) $badge = 'danger'; // Admin
@@ -50,7 +50,7 @@
                                     </span>
                                 </td>
 
-                                <td class="text-center">
+                                <td class="text-center" data-label="Acciones">
                                     <div class="btn-group shadow-sm">
                                         <a href="index.php?controller=Roles&action=editar&id=<?= $u['id_usu'] ?>" class="btn btn-white btn-sm border-right" title="Cambiar Rol">
                                             <i class="fas fa-pen" style="color: #6610f2;"></i>

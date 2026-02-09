@@ -1,0 +1,69 @@
+/* public/assets/css/admin-responsive.css  PARA QUE LA TABLA PRINCIPAL DEL ADMIN SEA APAPTE A CELULAR*/
+
+@media (max-width: 768px) {
+  /* Ocultar cabeceras de la tabla */
+  .table-mobile-responsive thead {
+    display: none;
+  }
+
+  /* Convertir filas en tarjetas */
+  .table-mobile-responsive tr {
+    display: block;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #e1e4e8;
+  }
+
+  /* Ajustar celdas */
+  .table-mobile-responsive td {
+    display: flex;
+    justify-content: space-between; /* Separa título y contenido */
+    align-items: center;
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    /* CAMBIO IMPORTANTE AQUÍ: */
+    padding: 12px 0 !important; /* Forzamos 0 a los lados para anular el pl-4 */
+    padding-left: 0 !important; /* Seguridad extra para la izquierda */
+    padding-right: 0 !important; /* Seguridad extra para la derecha */
+
+    text-align: right;
+    width: 100%;
+  }
+
+  .table-mobile-responsive td:last-child {
+    border-bottom: none;
+  }
+
+  /* Estilo de los títulos (data-label) */
+  .table-mobile-responsive td::before {
+    content: attr(data-label);
+    font-weight: 800;
+    color: #6c757d;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    text-align: left;
+    margin-right: 15px;
+  }
+
+  /* Ajuste para el nombre del cliente */
+  .table-mobile-responsive td .d-flex {
+    width: 100%;
+    justify-content: flex-end; /* Alinea contenido a la derecha */
+  }
+
+  /* AJUSTES EXTRA PARA TABLA NOTICIAS */
+  @media (max-width: 768px) {
+    /* Alinear contenido complejo a la derecha en móvil */
+    .table-mobile-responsive .align-items-end-mobile {
+      align-items: flex-end !important;
+    }
+
+    /* Asegurar que el texto de la noticia no sea muy ancho en móvil */
+    .table-mobile-responsive .text-truncate {
+      max-width: 150px !important;
+    }
+  }
+}

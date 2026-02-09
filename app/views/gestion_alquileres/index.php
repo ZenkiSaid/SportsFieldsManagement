@@ -11,7 +11,7 @@
             </div>
             
             <div class="card-body table-responsive p-0">
-                <table class="table table-hover align-middle text-nowrap">
+                <table class="table table-hover align-middle text-nowrap table-mobile-responsive">
                     
                     <thead class="bg-info text-white text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">
                         <tr>
@@ -46,11 +46,11 @@
                         <?php if (!empty($alquileres)): ?>
                             <?php foreach ($alquileres as $row): ?>
                             <tr style="transition: all 0.2s;">
-                                <td class="pl-4 font-weight-bold text-secondary">
+                                <td class="pl-md-4 font-weight-bold text-secondary" data-label="ID">
                                     #<?= $row['alq_id'] ?>
                                 </td>
                                 
-                                <td>
+                                <td data-label="CLIENTE">
                                     <div class="d-flex align-items-center">
                                         <div class="bg-light rounded-circle d-flex justify-content-center align-items-center mr-2 shadow-sm" style="width: 35px; height: 35px;">
                                             <i class="fas fa-user text-info"></i>
@@ -61,23 +61,23 @@
                                     </div>
                                 </td>
 
-                                <td class="text-center text-muted font-weight-bold">
+                                <td class="text-center text-muted font-weight-bold" data-label="FECHA">
                                     <?= date('d/m/Y', strtotime($row['alq_fecha'])) ?>
                                 </td>
 
-                                <td class="text-center">
+                                <td class="text-center" data-label="INICIO">
                                     <span class="badge badge-light border px-3 py-2 text-dark">
                                         <?= substr($row['alq_hora_ini'], 0, 5) ?>
                                     </span>
                                 </td>
 
-                                <td class="text-center">
+                                <td class="text-center" data-label="FIN">
                                     <span class="badge badge-light border px-3 py-2 text-dark">
                                         <?= substr($row['alq_hora_fin'], 0, 5) ?>
                                     </span>
                                 </td>
 
-                                <td class="text-center">
+                                <td class="text-center" data-label="COMPROBANTE">
                                     <?php if (!empty($row['alq_comprobante'])): ?>
                                         <a href="index.php?controller=GestionAlquileres&action=verImagen&img=<?= $row['alq_comprobante'] ?>" 
                                            target="_blank" 
@@ -92,7 +92,7 @@
                                     <?php endif; ?>
                                 </td>
 
-                                <td class="text-center">
+                                <td class="text-center" data-label="ESTADO">
                                     <?php 
                                         $est = strtoupper($row['est_nombre']);
                                         $badge = 'secondary';
@@ -108,7 +108,7 @@
                                     </span>
                                 </td>
 
-                                <td class="text-center">
+                                <td class="text-center" data-label="ACCIONES">
                                     <div class="btn-group">
                                         <a href="index.php?controller=GestionAlquileres&action=editar&id=<?= $row['alq_id'] ?>" 
                                            class="btn btn-light btn-sm shadow-sm border mr-1 text-info" 

@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="stylesheet" href="assets/adminlte/plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="assets/adminlte/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="assets/css/admin-responsive.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -237,7 +238,7 @@
                   </div>
 
                   <div class="card-body table-responsive p-0">
-                    <table class="table table-hover table-striped align-middle">
+                    <table class="table table-hover table-striped align-middle table-mobile-responsive ">
                         <thead class="bg-light text-muted">
                             <tr>
                                 <th class="pl-4 border-0"><i class="fas fa-user mr-2"></i> Cliente</th>
@@ -252,7 +253,7 @@
                             <?php if (!empty($historial)): ?>
                                 <?php foreach ($historial as $reserva): ?>
                                 <tr>
-                                    <td class="pl-4">
+                                    <td class="pl-4" data-label="Cliente">
                                         <div class="d-flex align-items-center">
                                             <div class="bg-gradient-primary rounded-circle d-flex justify-content-center align-items-center mr-3 shadow-sm" style="width: 35px; height: 35px; color: white; font-weight: bold;">
                                                 <?= strtoupper(substr($reserva['usuario_nombre'] ?? 'U', 0, 1)) ?>
@@ -262,11 +263,11 @@
                                             </span>
                                         </div>
                                     </td>
-                                    <td class="text-secondary"><?= date('d/m/Y', strtotime($reserva['alq_fecha'])) ?></td>
-                                    <td><span class="badge badge-light border px-2 py-1"><?= substr($reserva['alq_hora_ini'], 0, 5) ?> - <?= substr($reserva['alq_hora_fin'], 0, 5) ?></span></td>
-                                    <td><small class="text-uppercase font-weight-bold text-muted"><?= $reserva['can_nombre'] ?></small></td>
-                                    <td class="text-success font-weight-bold">$ <?= number_format($reserva['alq_valor'], 2) ?></td>
-                                    <td class="text-center">
+                                    <td class="text-secondary" data-label="Fecha"><?= date('d/m/Y', strtotime($reserva['alq_fecha'])) ?></td>
+                                    <td data-label="Horario"><span class="badge badge-light border px-2 py-1"><?= substr($reserva['alq_hora_ini'], 0, 5) ?> - <?= substr($reserva['alq_hora_fin'], 0, 5) ?></span></td>
+                                    <td data-label="Cancha"><small class="text-uppercase font-weight-bold text-muted"><?= $reserva['can_nombre'] ?></small></td>
+                                    <td class="text-success font-weight-bold" data-label="Valor">$ <?= number_format($reserva['alq_valor'], 2) ?></td>
+                                    <td class="text-center" data-label="Estado">
                                         <?php 
                                             $estado = $reserva['est_nombre'] ?? '';
                                             $badge = 'secondary';

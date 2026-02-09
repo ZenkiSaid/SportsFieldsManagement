@@ -1,6 +1,6 @@
 <div class="row justify-content-center mt-4">
-    <div class="col-md-6">
-        <div class="card card-outline card-warning shadow-lg border-0">
+    <div class="col-md-8 col-lg-6">
+        <div class="card card-warning shadow-lg border-0">
             <div class="card-header text-center bg-white border-bottom-0 pt-4">
                 <h4 class="font-weight-bold text-dark">Editar Noticia</h4>
             </div>
@@ -11,7 +11,11 @@
 
                     <div class="text-center mb-3">
                         <p class="small font-weight-bold text-secondary mb-1">Imagen Actual:</p>
-                        <img src="<?= htmlspecialchars($noticia['not_imagen']) ?>" class="img-thumbnail shadow-sm" style="max-height: 150px;">
+                        <?php if($noticia['not_imagen']): ?>
+                            <img src="uploads/noticias/<?= htmlspecialchars($noticia['not_imagen']) ?>" class="img-thumbnail shadow-sm" style="max-height: 150px;">
+                        <?php else: ?>
+                            <span class="text-muted small">Sin imagen asignada</span>
+                        <?php endif; ?>
                     </div>
 
                     <div class="form-group">
@@ -50,10 +54,9 @@
     </div>
 </div>
 
+<script src="assets/adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 <script>
-    document.querySelector('.custom-file-input').addEventListener('change', function(e){
-        var fileName = document.getElementById("imagenInput").files[0].name;
-        var nextSibling = e.target.nextElementSibling;
-        nextSibling.innerText = fileName;
+    $(function () {
+      bsCustomFileInput.init();
     });
 </script>

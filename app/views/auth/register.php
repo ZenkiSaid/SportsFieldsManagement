@@ -3,447 +3,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Canchas Premium</title>
+    <title>Crear Cuenta | Patos Sport</title>
     <?php include '../app/views/layouts/favicon.php'; ?>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/auth.css">
+    
     <style>
-        body { 
+        /* --- ESTILOS VISUALES (DISEÑO PROFESIONAL) --- */
+        :root {
+            --primary: #00c853;
+            --primary-hover: #009624;
+            --dark-overlay: rgba(0, 0, 0, 0.3);
+            --error: #e74c3c;
+            --success: #2ecc71;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background: #f5f5f5; 
-        }
-        
-        .auth-page { 
-            min-height: 100vh; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 2rem;
-            background: url('assets/img/background1.webp') center/cover fixed;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-container { 
-            background: #fff; 
-            border-radius: 20px; 
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); 
-            width: 100%; 
-            max-width: 550px; 
-            overflow: hidden;
-            position: relative;
-            z-index: 1;
-        }
-
-        .auth-header {
-            background: linear-gradient(135deg, var(--primary) 0%, #00b85f 100%);
-            padding: 2rem;
-            color: #000;
-            text-align: center;
-        }
-
-        .auth-header h1 {
-            margin: 0 0 0.5rem 0;
-            font-size: 1.8rem;
-            font-weight: 900;
-            text-transform: uppercase;
-        }
-
-        .auth-header p {
-            margin: 0;
-            font-size: 0.95rem;
-            opacity: 0.8;
-        }
-
-        .auth-content { 
-            padding: 3rem 2.5rem;
-            position: relative;
-        }
-
-        .form-group { 
-            margin-bottom: 1.2rem; 
-        }
-
-        .form-group label { 
-            display: block; 
-            margin-bottom: 0.5rem; 
-            color: #444; 
-            font-weight: 600; 
-            font-size: 0.9rem; 
-        }
-
-        .form-control { 
-            width: 100%; 
-            padding: 0.85rem 1rem; 
-            border-radius: 10px; 
-            border: 1px solid #ddd; 
-            outline: none; 
-            font-size: 0.95rem; 
-            transition: all 0.3s;
-            font-family: inherit;
-            box-sizing: border-box;
-        }
-
-        .form-control:focus { 
-            border-color: var(--primary); 
-            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
-        }
-
-        .btn-auth { 
-            width: 100%; 
-            padding: 0.95rem; 
-            border-radius: 30px; 
-            border: none; 
-            background: var(--primary); 
-            color: #000; 
-            font-weight: 800; 
-            font-size: 1rem; 
-            cursor: pointer; 
-            margin-top: 1.5rem; 
-            transition: all 0.3s;
-        }
-
-        .btn-auth:hover { 
-            background: #00b85f; 
-            transform: translateY(-2px); 
-            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
-        }
-
-        .btn-auth:active {
-            transform: translateY(0);
-        }
-
-        .switch-link { 
-            text-align: center; 
-            margin-top: 1.5rem; 
-            color: #999; 
-            font-size: 0.9rem; 
-        }
-
-        .switch-link a { 
-            color: var(--primary); 
-            text-decoration: none; 
-            font-weight: 600; 
-            cursor: pointer;
-        }
-
-        .switch-link a:hover {
-            text-decoration: underline;
-        }
-
-        .eye-btn { 
-            background: transparent; 
-            border: none; 
-            position: absolute; 
-            right: 12px; 
-            top: 36px; 
-            cursor: pointer; 
-            color: #999;
-            padding: 5px;
-        }
-
-        .eye-btn:hover {
-            color: var(--primary);
-        }
-
-        .input-wrap { 
-            position: relative; 
-        }
-
-        .error-msg { 
-            color: #e74c3c; 
-            font-size: 0.85rem; 
-            text-align: center; 
-            background: #fadbd8; 
-            padding: 0.5rem; 
-            border-radius: 8px; 
-            margin-bottom: 1rem;
-        }
-
-        .success-msg { 
-            color: #27ae60; 
-            font-size: 0.85rem; 
-            text-align: center; 
-            background: #d5f4e6; 
-            padding: 0.5rem; 
-            border-radius: 8px; 
-            margin-bottom: 1rem;
-        }
-
-        .form-group small {
-            display: block;
-            margin-top: 0.3rem;
-        }
-
-        .back-link {
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .back-link a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .back-link a:hover {
-            text-decoration: underline;
-        }
-
-        .home-btn {
-            display: inline-flex;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
+            /* Fondo de Estadio */
+            background: linear-gradient(var(--dark-overlay), var(--dark-overlay)),
+                        url('assets/img/home/homval.png') no-repeat center center/cover;
+            background-attachment: fixed;
+        }
+
+        /* Botón Volver */
+        .btn-back {
             position: absolute;
-            top: 1.5rem;
-            left: 1.5rem;
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.9) 0%, rgba(0, 200, 100, 0.9) 100%);
-            color: #000;
-            padding: 0.9rem 1.8rem;
-            border-radius: 50px;
+            top: 25px;
+            left: 25px;
+            color: white;
             text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 700;
-            z-index: 2;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .home-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .home-btn:hover {
-            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
-            color: #000;
-        }
-
-        .home-btn:hover::before {
-            left: 100%;
-        }
-
-        .home-btn:active {
-            transform: translateY(-2px) scale(1.02);
-        }
-
-        .home-btn i {
-            transition: transform 0.3s ease;
-        }
-
-        .home-btn:hover i {
-            transform: translateX(-5px);
-            animation: arrowBounce 0.6s ease infinite;
-        }
-
-        @keyframes arrowBounce {
-            0%, 100% { transform: translateX(-5px); }
-            50% { transform: translateX(-10px); }
-        }
-
-        .footer-box {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            text-align: center;
-            color: #666;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+            z-index: 10;
             font-size: 0.9rem;
         }
+        .btn-back:hover { background: var(--primary); color: #000; border-color: var(--primary); }
 
-        .strength-item {
-            display: flex;
-            align-items: center;
-            font-size: 0.85rem;
-            margin-bottom: 0.4rem;
-            color: #999;
+        /* Tarjeta */
+        .register-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 460px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            margin: 20px;
+            position: relative;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Encabezado */
+        .card-header {
+            background: linear-gradient(135deg, #00c853 0%, #009624 100%);
+            padding: 25px;
+            text-align: center;
+            color: white;
+        }
+        .card-header h2 { margin: 0; font-size: 1.6rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        .logo-small { height: 50px; width: auto; margin-top: 10px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); }
+
+        .card-body { padding: 30px; }
+
+        /* Inputs */
+        .form-group { margin-bottom: 18px; }
+        .form-label { display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 5px; }
+        .input-wrapper { position: relative; }
+        
+        .form-input {
+            width: 100%;
+            /* Ajustamos padding derecho para que el texto no choque con el ojo */
+            padding: 12px 40px 12px 40px; 
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: #f8f9fa;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+        .form-input:focus { border-color: var(--primary); background: #fff; outline: none; box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.1); }
+        
+        /* Icono Izquierdo (Candado/Usuario) */
+        .input-icon { position: absolute; top: 50%; left: 12px; transform: translateY(-50%); color: #aaa; }
+
+        /* NUEVO: Icono Derecho (Ojo) */
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            color: #aaa;
+            cursor: pointer;
+            z-index: 5;
             transition: color 0.3s;
         }
+        .toggle-password:hover { color: var(--primary); }
 
-        .strength-item.completed {
-            color: #27ae60;
-        }
-
-        .strength-item.completed i {
-            color: #27ae60 !important;
-        }
-
-        .strength-item.warning {
-            color: #f39c12;
-        }
-
-        .strength-item.warning i {
-            color: #f39c12 !important;
-        }
-
-        .btn-auth:disabled {
-            opacity: 0.5;
+        /* Botón Submit */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: #ccc;
+            color: #666;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: not-allowed;
+            transition: 0.3s;
+            margin-top: 15px;
+            text-transform: uppercase;
         }
 
-        .btn-auth:not(:disabled):hover {
+        .btn-submit.active {
             background: var(--primary);
-            transform: translateY(-2px);
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 200, 83, 0.3);
+        }
+        .btn-submit.active:hover { background: var(--primary-hover); transform: translateY(-2px); }
+
+        /* Requisitos */
+        .password-requirements {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
         }
 
-        @media (max-width: 480px) {
-            .auth-container { width: 95%; }
-            .auth-content { padding: 2rem 1.5rem; }
-            .auth-header { padding: 1.5rem; }
-            .auth-header h1 { font-size: 1.4rem; }
+        .req-item {
+            font-size: 0.75rem;
+            color: #777;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.3s;
         }
+        
+        .req-item i { font-size: 0.6rem; color: #ccc; transition: all 0.3s; }
+        .req-item.valid { color: var(--success); font-weight: 600; }
+        .req-item.valid i { color: var(--success); font-size: 0.8rem; }
+        .req-item.invalid { color: var(--error); }
+        .req-item.invalid i { color: var(--error); }
+
+        .login-footer { text-align: center; margin-top: 25px; font-size: 0.9rem; color: #666; }
+        .login-footer a { color: var(--primary); text-decoration: none; font-weight: 700; }
+        .login-footer a:hover { text-decoration: underline; }
+
+        .alert { padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; text-align: center; border: 1px solid transparent; }
+        .alert-error { background: #ffebee; color: #c62828; border-color: #ffcdd2; }
     </style>
 </head>
 <body>
 
-    <div class="auth-page">
-        <a href="index.php?url=Home/index" class="home-btn"><i class="fas fa-arrow-left"></i> Volver al Inicio</a>
-        <div class="auth-container">
-            <div class="auth-header">
-                <h1>Crear Cuenta</h1>
-                <p>Regístrate para reservar tus canchas</p>
-            </div>
+    <a href="index.php" class="btn-back"><i class="fas fa-arrow-left"></i> Inicio</a>
 
-            <div class="auth-content">
-                <?php if(isset($_GET['msg']) && $_GET['msg'] == 'exists'): ?>
-                    <div class="error-msg"><i class="fas fa-exclamation-circle"></i> El usuario ya existe</div>
-                <?php endif; ?>
-                <?php if(isset($_GET['msg']) && $_GET['msg'] == 'mismatch'): ?>
-                    <div class="error-msg"><i class="fas fa-exclamation-circle"></i> Las contraseñas no coinciden</div>
-                <?php endif; ?>
-                <?php if(isset($_GET['msg']) && $_GET['msg'] == 'success'): ?>
-                    <div class="success-msg"><i class="fas fa-check-circle"></i> Cuenta creada exitosamente. <a href="index.php?url=Auth/login" style="color: #166534; font-weight: 700;">Inicia sesión aquí</a></div>
-                <?php endif; ?>
+    <div class="register-card">
+        <div class="card-header">
+            <h2>Crear Cuenta</h2>
+            <img src="assets/img/minilogo.png" alt="Logo" class="logo-small">
+        </div>
+
+        <div class="card-body">
+            
+            <?php if(isset($_GET['msg']) && $_GET['msg'] == 'exists'): ?>
+                <div class="alert alert-error"><i class="fas fa-exclamation-triangle"></i> El usuario o correo ya existe.</div>
+            <?php endif; ?>
+
+            <form action="index.php?controller=Auth&action=register" method="POST" id="registerForm">
                 
-                <form action="index.php?controller=Auth&action=register" method="POST">
-                    <div class="form-group">
-                        <label><i class="fas fa-user"></i> Nombre de usuario</label>
-                        <input class="form-control" type="text" name="nombre_usu" placeholder="Tu nombre de usuario" required autocomplete="username">
-                        <small style="color:#999;">Será tu identificador para iniciar sesión</small>
+                <div class="form-group">
+                    <label class="form-label">Usuario</label>
+                    <div class="input-wrapper">
+                        <input type="text" name="nombre" class="form-input" placeholder="Ej. JuanPerez" required>
+                        <i class="fas fa-user input-icon"></i>
                     </div>
-
-                    <div class="form-group">
-                        <label><i class="fas fa-envelope"></i> Correo electrónico</label>
-                        <input class="form-control" type="email" name="email" placeholder="tu@email.com" required autocomplete="email">
-                        <small style="color:#999;">Recibirás un código de verificación</small>
-                    </div>
-
-                    <div class="form-group input-wrap">
-                        <label><i class="fas fa-lock"></i> Contraseña</label>
-                        <input id="reg-password" class="form-control" type="password" name="password" placeholder="Mín. 8 caracteres" required minlength="8" autocomplete="new-password" oninput="validarContraseña()">
-                        <button type="button" class="eye-btn" onclick="togglePassword('reg-password')" title="Mostrar contraseña">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-
-                    <!-- Indicador de fortaleza de contraseña -->
-                    <div id="password-strength" style="margin-bottom: 1.2rem;">
-                        <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem;">Requisitos:</div>
-                        <div class="strength-item" id="strength-length">
-                            <i class="fas fa-circle" style="color: #ccc; margin-right: 0.5rem;"></i>
-                            <span>Mínimo 8 caracteres</span>
-                        </div>
-                        <div class="strength-item" id="strength-upper">
-                            <i class="fas fa-circle" style="color: #ccc; margin-right: 0.5rem;"></i>
-                            <span>Mayúsculas (A-Z)</span>
-                        </div>
-                        <div class="strength-item" id="strength-lower">
-                            <i class="fas fa-circle" style="color: #ccc; margin-right: 0.5rem;"></i>
-                            <span>Minúsculas (a-z)</span>
-                        </div>
-                        <div class="strength-item" id="strength-number">
-                            <i class="fas fa-circle" style="color: #ccc; margin-right: 0.5rem;"></i>
-                            <span>Números (0-9)</span>
-                        </div>
-                        <div class="strength-item" id="strength-special">
-                            <i class="fas fa-circle" style="color: #ccc; margin-right: 0.5rem;"></i>
-                            <span>Caracteres especiales (!@#$%^&*)</span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label><i class="fas fa-lock"></i> Confirmar contraseña</label>
-                        <input id="confirm-password" class="form-control" type="password" name="password_confirm" placeholder="••••••••" required autocomplete="new-password">
-                    </div>
-
-                    <button class="btn-auth" type="submit" id="submit-btn" disabled><i class="fas fa-check"></i> Crear cuenta</button>
-                </form>
-
-                <div class="back-link">
-                    <a href="index.php?controller=Auth&action=login" style="color: #166534; font-weight: 700;"><i class="fas fa-arrow-left"></i> Iniciar Sesión</a>
                 </div>
-            </div>
+
+                <div class="form-group">
+                    <label class="form-label">Correo Electrónico</label>
+                    <div class="input-wrapper">
+                        <input type="email" name="correo" class="form-input" placeholder="tu@email.com" required>
+                        <i class="fas fa-envelope input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Contraseña</label>
+                    <div class="input-wrapper">
+                        <input type="password" name="password" id="password" class="form-input" placeholder="Tu contraseña segura" required>
+                        <i class="fas fa-lock input-icon"></i>
+                        <i class="fas fa-eye toggle-password" onclick="toggleVisibility('password', this)"></i>
+                    </div>
+                    
+                    <ul class="password-requirements">
+                        <li class="req-item" id="req-len"><i class="fas fa-circle"></i> 8+ Caracteres</li>
+                        <li class="req-item" id="req-upper"><i class="fas fa-circle"></i> Mayúscula (A-Z)</li>
+                        <li class="req-item" id="req-lower"><i class="fas fa-circle"></i> Minúscula (a-z)</li>
+                        <li class="req-item" id="req-num"><i class="fas fa-circle"></i> Número (0-9)</li>
+                        <li class="req-item" id="req-spec"><i class="fas fa-circle"></i> Símbolo (!@#$)</li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirmar Contraseña</label>
+                    <div class="input-wrapper">
+                        <input type="password" name="confirm_password" id="confirm_password" class="form-input" placeholder="Repite tu contraseña" required>
+                        <i class="fas fa-check-circle input-icon"></i>
+                        <i class="fas fa-eye toggle-password" onclick="toggleVisibility('confirm_password', this)"></i>
+                    </div>
+                    <small id="match-msg" style="display:none; color: #e74c3c; font-size: 0.75rem; margin-top: 5px;">
+                        <i class="fas fa-times"></i> Las contraseñas no coinciden
+                    </small>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submit-btn" disabled>
+                    Registrarme
+                </button>
+
+                <div class="login-footer">
+                    ¿Ya tienes cuenta? <a href="index.php?controller=Auth&action=login">Inicia Sesión</a>
+                </div>
+            </form>
         </div>
     </div>
 
     <script>
-        function togglePassword(id){
-            const el = document.getElementById(id);
-            if(!el) return;
-            el.type = el.type === 'password' ? 'text' : 'password';
-        }
+        const passwordInput = document.getElementById('password');
+        const confirmInput = document.getElementById('confirm_password');
+        const submitBtn = document.getElementById('submit-btn');
+        const matchMsg = document.getElementById('match-msg');
 
-        function validarContraseña() {
-            const password = document.getElementById('reg-password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
-            const submitBtn = document.getElementById('submit-btn');
-            
-            // Validaciones
-            const checks = {
-                length: password.length >= 8,
-                upper: /[A-Z]/.test(password),
-                lower: /[a-z]/.test(password),
-                number: /[0-9]/.test(password),
-                special: /[!@#$%^&*()_+\-=\[\]{};:'",.​<>?\/\\|`~]/.test(password)
-            };
+        const reqs = {
+            len: document.getElementById('req-len'),
+            upper: document.getElementById('req-upper'),
+            lower: document.getElementById('req-lower'),
+            num: document.getElementById('req-num'),
+            spec: document.getElementById('req-spec')
+        };
 
-            // Actualizar indicadores
-            actualizarIndicador('strength-length', checks.length);
-            actualizarIndicador('strength-upper', checks.upper);
-            actualizarIndicador('strength-lower', checks.lower);
-            actualizarIndicador('strength-number', checks.number);
-            actualizarIndicador('strength-special', checks.special);
-
-            // Verificar si todas las condiciones se cumplen
-            const todosCompletos = Object.values(checks).every(check => check === true);
-            const coinciden = password === confirmPassword && password.length > 0;
-
-            // Habilitar/deshabilitar botón
-            submitBtn.disabled = !(todosCompletos && coinciden);
-        }
-
-        function actualizarIndicador(elementId, cumple) {
-            const elemento = document.getElementById(elementId);
-            if (!elemento) return;
-            
-            const icono = elemento.querySelector('i');
-            elemento.classList.remove('completed', 'warning');
-            
-            if (cumple) {
-                elemento.classList.add('completed');
-                icono.className = 'fas fa-check-circle';
+        // --- FUNCIÓN PARA MOSTRAR/OCULTAR CONTRASEÑA ---
+        function toggleVisibility(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
             } else {
-                icono.className = 'fas fa-circle';
+                input.type = "password";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
             }
         }
 
-        // Validar cuando se escriba en confirmar contraseña
-        document.getElementById('confirm-password').addEventListener('input', validarContraseña);
+        // --- LÓGICA DE VALIDACIÓN ---
+        function validar() {
+            const val = passwordInput.value;
+            const confVal = confirmInput.value;
 
-        // Inicializar
-        validarContraseña();
+            // 1. Validar Reglas
+            const checks = {
+                len: val.length >= 8,
+                upper: /[A-Z]/.test(val),
+                lower: /[a-z]/.test(val),
+                num: /[0-9]/.test(val),
+                spec: /[!@#$%^&*(),.?":{}|<>]/.test(val)
+            };
+
+            // 2. Actualizar UI
+            updateUI(reqs.len, checks.len);
+            updateUI(reqs.upper, checks.upper);
+            updateUI(reqs.lower, checks.lower);
+            updateUI(reqs.num, checks.num);
+            updateUI(reqs.spec, checks.spec);
+
+            // 3. Verificar Coincidencia
+            const match = (val === confVal) && (val.length > 0);
+            
+            if(confVal.length > 0 && !match) {
+                matchMsg.style.display = 'block';
+            } else {
+                matchMsg.style.display = 'none';
+            }
+
+            // 4. Bloquear/Desbloquear Botón
+            const allValid = Object.values(checks).every(Boolean);
+            
+            if (allValid && match) {
+                submitBtn.disabled = false;
+                submitBtn.classList.add('active');
+                submitBtn.innerHTML = 'Registrarme <i class="fas fa-check ml-2"></i>';
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('active');
+                submitBtn.innerHTML = 'Complete los requisitos';
+            }
+        }
+
+        function updateUI(element, isValid) {
+            const icon = element.querySelector('i');
+            if (isValid) {
+                element.classList.add('valid');
+                element.classList.remove('invalid');
+                icon.className = 'fas fa-check-circle';
+            } else {
+                element.classList.remove('valid');
+                icon.className = 'fas fa-circle';
+            }
+        }
+
+        passwordInput.addEventListener('keyup', validar);
+        confirmInput.addEventListener('keyup', validar);
     </script>
+
 </body>
 </html>
