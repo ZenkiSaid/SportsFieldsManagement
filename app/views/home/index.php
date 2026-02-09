@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include '../app/views/layouts/favicon.php'; ?>
-    <title>Canchas Premium - Reserva tu Cancha</title>
+    <title>Canchas Pato's - Reserva tu Cancha</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/landinghome.css">
 </head>
@@ -234,7 +234,7 @@
  <footer class="footer" id="contacto">
         <div class="footer-container">
             <div class="footer-col">
-                <h3>Canchas Premium</h3>
+                <h3>Canchas Pato's</h3>
                 <p class="owner-tag">
                     <i class="fas fa-user-tie"></i> Prop. Milton Montaluisa
                 </p>
@@ -273,7 +273,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2026 Canchas Premium. Todos los derechos reservados.</p>
+            <p>© 2026 Canchas Pato's. Todos los derechos reservados.</p>
         </div>
     </footer>
 

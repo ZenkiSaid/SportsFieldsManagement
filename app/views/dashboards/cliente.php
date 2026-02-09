@@ -101,13 +101,6 @@
            </li>
 
            <li class="nav-item">
-               <a href="index.php?controller=Reservas&action=historial" class="nav-link">
-                   <i class="nav-icon fas fa-history text-info"></i>
-                   <p>Mis Partidos</p>
-               </a>
-           </li>
-
-           <li class="nav-item">
                <a href="index.php?controller=Perfil&action=index" class="nav-link">
                    <i class="nav-icon fas fa-user-cog text-warning"></i>
                    <p>Mi Perfil</p>
@@ -265,7 +258,7 @@
     <div class="float-right d-none d-sm-inline text-muted">
       Pasión por el deporte
     </div>
-    <strong>Copyright &copy; 2026 <a href="#" class="text-success">Canchas Premium</a>.</strong>
+    <strong>Copyright &copy; 2026 <a href="#" class="text-success">Canchas Pato's</a>.</strong>
   </footer>
 </div>
 

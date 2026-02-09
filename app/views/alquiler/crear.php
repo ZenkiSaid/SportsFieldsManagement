@@ -190,7 +190,7 @@
                         <div class="row">
                             <div class="col-12 col-md-6 mb-3 form-group">
                                 <label class="small font-weight-bold"><i class="far fa-clock"></i> Hora Inicio</label>
-                                <select name="hora_ini" id="hora_ini" class="custom-select" required onchange="calcularPrecio()">
+                                <select name="hora_ini" id="hora_ini" class="custom-select" required onchange="actualizarHorasFin(); calcularPrecio()">
                                     <option value="">-- Inicio --</option>
                                     <?php foreach($horarios as $h): ?>
                                         <option value="<?= $h['hor_nombre'] ?>"><?= $h['hor_nombre'] ?></option>
@@ -263,7 +263,7 @@
   
   <footer class="main-footer text-sm">
     <div class="float-right d-none d-sm-inline">Pasión por el fútbol</div>
-    <strong>Copyright &copy; 2026 <a href="#" class="text-success">Canchas Premium</a>.</strong>
+    <strong>Copyright &copy; 2026 <a href="#" class="text-success">Canchas Pato's</a>.</strong>
   </footer>
 </div>
 
@@ -285,6 +285,42 @@
         const selectedOption = canchaSelect.options[canchaSelect.selectedIndex];
         precioPorHora = parseFloat(selectedOption.getAttribute('data-precio')) || 0;
         calcularPrecio();
+    }
+
+    function actualizarHorasFin() {
+        const horaIni = document.getElementById('hora_ini').value;
+        const horaFinSelect = document.getElementById('hora_fin');
+        const options = horaFinSelect.options;
+
+        // Si no hay hora de inicio, resetear o habilitar todo (opcional)
+        // Pero la lógica pide bloquear las anteriores.
+
+        let found = false;
+        
+        for (let i = 0; i < options.length; i++) {
+            const opt = options[i];
+            const val = opt.value;
+
+            if (val === "") continue; // Saltar el placeholder
+
+            // Comparamos strings "HH:MM". 
+            // Como formato es hh:mm:ss o hh:mm, string comparison funciona bien para 09:00 vs 10:00
+            // "09:00:00" <= "09:00:00" -> True (Bloquear)
+            
+            if (horaIni && val <= horaIni) {
+                opt.disabled = true;
+                opt.style.display = 'none'; // Ocultar visualmente también
+            } else {
+                opt.disabled = false;
+                opt.style.display = 'block';
+            }
+        }
+        
+        // Si el valor actual de Fin es inválido (menor o igual a Inicio), lo reseteamos
+        if (horaFinSelect.value && horaFinSelect.value <= horaIni) {
+            horaFinSelect.value = "";
+            calcularPrecio(); // Recalcular precio a 0
+        }
     }
 
     function calcularPrecio() {
@@ -340,6 +376,7 @@
         if(document.getElementById('cancha').value) {
             cargarPrecio();
         }
+        actualizarHorasFin();
     });
 
 </script>
