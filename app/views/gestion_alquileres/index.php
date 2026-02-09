@@ -30,9 +30,7 @@
                             <th class="text-center py-3 border-0" style="width: 10%;">
                                 <i class="far fa-clock opacity-50 mr-1"></i> Fin
                             </th>
-                            <th class="text-center py-3 border-0" style="width: 15%;">
-                                <i class="fas fa-receipt opacity-50 mr-1"></i> Comprobante
-                            </th>
+
                             <th class="text-center py-3 border-0" style="width: 15%;">
                                 <i class="fas fa-toggle-on opacity-50 mr-1"></i> Estado
                             </th>
@@ -77,20 +75,7 @@
                                     </span>
                                 </td>
 
-                                <td class="text-center" data-label="COMPROBANTE">
-                                    <?php if (!empty($row['alq_comprobante'])): ?>
-                                        <a href="index.php?controller=GestionAlquileres&action=verImagen&img=<?= $row['alq_comprobante'] ?>" 
-                                           target="_blank" 
-                                           class="btn btn-outline-info btn-sm rounded-pill px-3 shadow-sm font-weight-bold"
-                                           style="border-width: 2px;">
-                                            <i class="fas fa-eye mr-1"></i> Ver ($<?= $row['alq_valor'] ?>)
-                                        </a>
-                                    <?php else: ?>
-                                        <span class="badge badge-secondary opacity-50 font-weight-normal px-3 py-2 rounded-pill">
-                                            <i class="fas fa-times mr-1"></i> Pendiente
-                                        </span>
-                                    <?php endif; ?>
-                                </td>
+
 
                                 <td class="text-center" data-label="ESTADO">
                                     <?php 

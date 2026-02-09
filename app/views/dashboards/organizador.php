@@ -196,7 +196,7 @@
     <div class="float-right d-none d-sm-inline">
       Tu pasión, nuestro compromiso.
     </div>
-    <strong>Copyright &copy; 2026 <a href="#">Canchas Premium</a>.</strong>
+    <strong>Copyright &copy; 2026 <a href="#">Canchas Pato's</a>.</strong>
   </footer>
 </div>
 

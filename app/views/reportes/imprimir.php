@@ -194,7 +194,7 @@
         </div>
 
         <div class="fixed-bottom p-3 text-center text-muted small border-top bg-white">
-            Sistema de Gestión "Canchas Premium" - Documento generado automáticamente.
+            Sistema de Gestión "Canchas Pato's" - Documento generado automáticamente.
         </div>
 
     </div>
